@@ -1,12 +1,59 @@
-// Stub — will be replaced by Task 6
-import type { Action } from "./types";
+import { CheckCircle, ExternalLink } from "lucide-react";
+import { formatAmount, type Action, type Currency } from "./types";
+
 interface CompletedCellProps {
   actions: Action[];
 }
+
 export function CompletedCell({ actions }: CompletedCellProps) {
+  const total = actions.reduce((sum, a) => sum + a.amount, 0);
+  // Only renders totals when actions.length > 0, so currency is always defined here
+  const currency = actions[0]?.currency as Currency | undefined;
+
   return (
-    <div className="border-t sm:border-t-0 sm:border-l border-gray-100 px-5 py-4 text-xs text-gray-300">
-      Completed — coming soon ({actions.length} actions)
+    <div className="px-5 py-4 border-t sm:border-t-0 sm:border-l border-gray-100">
+      {actions.length === 0 ? (
+        <p className="text-xs text-gray-300">No completed settlements</p>
+      ) : (
+        <>
+          <div className="flex items-center gap-1.5 mb-2">
+            <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+            <span className="text-xs font-semibold text-green-600">
+              {actions.length} settlement{actions.length !== 1 ? "s" : ""}
+            </span>
+          </div>
+
+          <div className="space-y-1.5 mb-3">
+            {actions.map((action) => (
+              <div key={action.id} className="flex items-center justify-between">
+                <span className="text-xs text-gray-400 truncate max-w-[100px]">
+                  {action.accountFrom.split(" - ")[0]}
+                </span>
+                <span className="text-xs font-semibold tabular-nums text-gray-700">
+                  {formatAmount(action.amount, action.currency)}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {currency && total > 0 && (
+            <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
+              <span className="text-xs text-gray-400">Total</span>
+              <span className="text-xs font-bold text-gray-800 tabular-nums">
+                {formatAmount(total, currency as Currency)}
+              </span>
+            </div>
+          )}
+
+          <button
+            onClick={() => console.log("Navigate to Payments module")}
+            className="mt-3 flex items-center gap-1 text-xs text-gray-400 hover:text-purple-600 transition-colors"
+          >
+            <ExternalLink className="w-3 h-3" />
+            View in Payments
+          </button>
+        </>
+      )}
     </div>
   );
 }
