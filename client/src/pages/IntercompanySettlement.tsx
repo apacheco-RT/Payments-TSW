@@ -2,23 +2,11 @@ import { useState } from "react";
 import TreasuryShell from "@/components/TreasuryShell";
 import { DashboardHeader } from "@/components/netting/DashboardHeader";
 import { ColumnHeaders } from "@/components/netting/ColumnHeaders";
+import { EntityRow } from "@/components/netting/EntityRow";
 import {
   MOCK_PAIRINGS, MOCK_ACTIONS, MOCK_COMPLETED_ACTIONS,
   SETTLEMENT_TYPES, type TxType, type Action,
 } from "@/components/netting/types";
-
-function PlaceholderRow({ id }: { id: string }) {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-[2fr_2fr_1.5fr] border-b border-gray-100 min-h-[80px]">
-      {[0, 1, 2].map((i) => (
-        <div key={i} className={`px-5 py-4 ${i > 0 ? "border-t sm:border-t-0 sm:border-l border-gray-100" : ""}`}>
-          <div className="h-3 w-24 bg-gray-100 rounded animate-pulse mb-2" />
-          <div className="h-3 w-16 bg-gray-100 rounded animate-pulse" />
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export default function IntercompanySettlement() {
   const today = new Date();
@@ -40,7 +28,13 @@ export default function IntercompanySettlement() {
         <div className="flex-1 overflow-auto">
           <ColumnHeaders />
           {MOCK_PAIRINGS.map((pairing) => (
-            <PlaceholderRow key={pairing.id} id={pairing.id} />
+            <EntityRow
+              key={pairing.id}
+              pairing={pairing}
+              inflightActions={actions.filter((a) => a.pairingId === pairing.id)}
+              completedActions={MOCK_COMPLETED_ACTIONS.filter((a) => a.pairingId === pairing.id)}
+              onInitiateAction={(id) => console.log("Initiate action for", id)}
+            />
           ))}
         </div>
       </div>
