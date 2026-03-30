@@ -45,7 +45,7 @@ function TransactionRowInner({
           : t.risk >= 70 ? "border-l-orange-500"
           : t.risk >= 40 ? "border-l-amber-500/50"
           : "border-l-transparent"}
-          ${isExpanded ? "bg-slate-700/20" : isSel ? "bg-teal-500/5 hover:bg-teal-500/8" : "bg-surface-page hover:bg-surface-row-hover"}`}>
+          ${isExpanded ? "bg-slate-700/20" : isSel ? "bg-teal-500/5 hover:bg-teal-500/8" : "bg-[var(--ds-color-surface-page)] hover:bg-[var(--ds-color-interactive-selected-bg)]"}`}>
 
         <td className="pl-3 pr-1 py-3" aria-hidden="true">
           <ChevronRight className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isExpanded ? "rotate-90" : ""}`} />
@@ -54,7 +54,7 @@ function TransactionRowInner({
           <button
             aria-label={isSel ? `Deselect ${t.payee}` : `Select ${t.payee}`}
             aria-pressed={isSel}
-            className="p-1 min-w-[24px] min-h-[24px] flex items-center justify-center cursor-pointer text-slate-400 hover:text-teal-400 transition-colors rounded-(--m3-shape-xs) focus:outline-hidden focus:ring-2 focus:ring-teal-400">
+            className="p-1 min-w-[24px] min-h-[24px] flex items-center justify-center cursor-pointer text-slate-400 hover:text-teal-400 transition-colors rounded-[var(--ds-radius-xs)] focus:outline-hidden focus:ring-2 focus:ring-teal-400">
             {isSel ? <CheckSquare className="w-4 h-4 text-teal-400" aria-hidden="true" /> : <Square className="w-4 h-4" aria-hidden="true" />}
           </button>
         </td>
@@ -63,7 +63,7 @@ function TransactionRowInner({
           <td className={`${td} font-mono text-xs text-slate-300 whitespace-nowrap`}>
             {t.id}
             {featureFlags.rlusdStrip && t.rlusdEligible && t.status === "Needs Approval" && (
-              <span className="ml-1.5 inline-flex items-center px-1 py-0 rounded-(--m3-shape-xs) text-[9px] font-bold text-white bg-teal-500 leading-tight">RLUSD</span>
+              <span className="ml-1.5 inline-flex items-center px-1 py-0 rounded-[var(--ds-radius-xs)] text-[9px] font-bold text-white bg-teal-500 leading-tight">RLUSD</span>
             )}
           </td>
         )}
@@ -79,14 +79,14 @@ function TransactionRowInner({
             <button
               aria-label={`View operative account ${t.operativeAcct}`}
               onClick={e => e.stopPropagation()}
-              className="text-teal-400 hover:text-teal-300 hover:underline transition-colors focus:outline-hidden focus:ring-2 focus:ring-teal-400 rounded-(--m3-shape-xs)">
+              className="text-teal-400 hover:text-teal-300 hover:underline transition-colors focus:outline-hidden focus:ring-2 focus:ring-teal-400 rounded-[var(--ds-radius-xs)]">
               {t.operativeAcct}
             </button>
           </td>
         )}
         {cols.instType && (
           <td className={td}>
-            <span className="text-xs px-1.5 py-0.5 rounded-(--m3-shape-sm) bg-slate-800/60 border border-surface-border text-slate-300 font-medium">{t.instType}</span>
+            <span className="text-xs px-1.5 py-0.5 rounded-[var(--ds-radius-lg)] bg-slate-800/60 border border-[var(--ds-color-border-default)] text-slate-300 font-medium">{t.instType}</span>
           </td>
         )}
         {cols.valDate && <td className={`${td} text-xs text-slate-300`}>{t.valDate}</td>}
@@ -110,13 +110,13 @@ function TransactionRowInner({
       <AnimatePresence initial={false}>
         {isExpanded && (
           <tr>
-            <td colSpan={totalColSpan} className="p-0 border-b border-surface-border">
+            <td colSpan={totalColSpan} className="p-0 border-b border-[var(--ds-color-border-default)]">
               <motion.div
                 initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.18, ease: "easeInOut" }}
                 className="overflow-hidden"
               >
-                <div className="bg-surface-section px-6 py-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-[var(--ds-color-surface-page)] px-6 py-4 grid grid-cols-2 md:grid-cols-4 gap-4">
                   <DetailCard title="Payment details">
                     <dl className="space-y-2.5">
                       {([
@@ -191,7 +191,7 @@ function TransactionRowInner({
                         <div className="flex items-baseline justify-between gap-3">
                           <dt className="text-xs text-slate-300 whitespace-nowrap shrink-0">Chain</dt>
                           <dd className="text-xs font-medium text-right">
-                            <button className="text-teal-400 hover:underline focus:outline-hidden focus:ring-2 focus:ring-teal-400 rounded-(--m3-shape-xs)">
+                            <button className="text-teal-400 hover:underline focus:outline-hidden focus:ring-2 focus:ring-teal-400 rounded-[var(--ds-radius-xs)]">
                               {t.waterfallChain} ({t.waterfallPosition}/{t.waterfallTotal})
                             </button>
                           </dd>
@@ -202,7 +202,7 @@ function TransactionRowInner({
                           <Paperclip className="w-3 h-3 text-slate-400 shrink-0" aria-hidden="true" />
                           <button
                             onClick={e => { e.stopPropagation(); setAttachment(t.attachment!); }}
-                            className="text-xs text-teal-400 hover:underline truncate focus:outline-hidden focus:ring-2 focus:ring-teal-400 rounded-(--m3-shape-xs)">
+                            className="text-xs text-teal-400 hover:underline truncate focus:outline-hidden focus:ring-2 focus:ring-teal-400 rounded-[var(--ds-radius-xs)]">
                             {t.attachment.name}
                           </button>
                         </div>

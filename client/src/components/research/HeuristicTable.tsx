@@ -8,20 +8,20 @@ export function HeuristicTable() {
   if (!heuristics) return null;
 
   return (
-    <section className="py-12 border-t border-slate-800/50 bg-surface-inset">
+    <section className="py-12 border-t border-slate-800/50 bg-[var(--ds-color-surface-sunken)]">
       <div className="container mx-auto px-6 max-w-6xl">
         <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <h2 className="text-xl font-medium text-white mb-2 flex items-center gap-3">
-            <span className="w-8 h-8 rounded-(--m3-shape-full) bg-blue-500/15 border border-blue-500/25 text-blue-400 text-sm font-bold flex items-center justify-center">A</span>
+            <span className="w-8 h-8 rounded-full bg-blue-500/15 border border-blue-500/25 text-blue-400 text-sm font-bold flex items-center justify-center">A</span>
             Heuristic Evaluation — H1 to H10
           </h2>
           <p className="text-slate-400 text-sm mb-8">Nielsen's 10 heuristics applied across both screens. Severity rated by frequency × impact.</p>
 
-          <div className="bg-surface-card rounded-(--m3-shape-md) border border-slate-800 overflow-hidden">
+          <div className="bg-[var(--ds-color-surface-default)] rounded-[var(--ds-radius-xl)] border border-slate-800 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-blue-500/20 bg-surface-card">
+                  <tr className="border-b border-blue-500/20 bg-[var(--ds-color-surface-default)]">
                     <th className="px-4 py-3 text-xs uppercase text-slate-400 font-bold w-16">ID</th>
                     <th className="px-4 py-3 text-xs uppercase text-slate-400 font-bold w-44">Heuristic</th>
                     <th className="px-4 py-3 text-xs uppercase text-slate-400 font-bold">Finding</th>

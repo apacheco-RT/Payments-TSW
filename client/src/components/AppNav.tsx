@@ -162,13 +162,13 @@ export default function AppNav() {
       {/* Skip to main content */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-100 focus:px-4 focus:py-2 focus:rounded-(--m3-shape-sm) focus:bg-teal-600 focus:text-white focus:text-sm focus:font-medium focus:shadow-lg focus:outline-hidden"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-100 focus:px-4 focus:py-2 focus:rounded-[var(--ds-radius-lg)] focus:bg-teal-600 focus:text-white focus:text-sm focus:font-medium focus:shadow-lg focus:outline-hidden"
       >
         Skip to main content
       </a>
 
       {/* Secondary Nav bar */}
-      <div className="nav-dark flex items-center h-[96px] bg-surface-inset border-b border-surface-border shrink-0 relative z-30">
+      <div className="nav-dark flex items-center h-[96px] bg-[var(--ds-color-surface-sunken)] border-b border-[var(--ds-color-border-default)] shrink-0 relative z-30">
 
         <a href="/" className="flex items-center shrink-0 pl-4 pr-3 h-full group" aria-label="Ripple Treasury home">
           <img src="/logo.svg" alt="" className="h-9 w-auto theme-logo" aria-hidden="true" />
@@ -234,7 +234,7 @@ export default function AppNav() {
             <input
               placeholder="I'm looking for..."
               aria-label="Global search"
-              className="bg-surface-card border border-surface-border text-slate-300 text-xs rounded-(--m3-shape-full) pl-4 pr-8 py-1.5 w-52 focus:outline-hidden focus:ring-2 focus:ring-teal-400 focus:border-teal-500/40 placeholder:text-slate-400 transition-all"
+              className="bg-[var(--ds-color-surface-default)] border border-[var(--ds-color-border-default)] text-slate-300 text-xs rounded-full pl-4 pr-8 py-1.5 w-52 focus:outline-hidden focus:ring-2 focus:ring-teal-400 focus:border-teal-500/40 placeholder:text-slate-400 transition-all"
             />
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
           </div>
@@ -262,11 +262,11 @@ export default function AppNav() {
         <div
           ref={antiFraudPanel}
           style={{ position: "fixed", left: afLeft, top: 140, zIndex: 200 }}
-          className="nav-dark w-[560px] bg-surface-section border border-surface-border rounded-b-(--m3-shape-md) shadow-2xl overflow-hidden"
+          className="nav-dark w-[560px] bg-[var(--ds-color-surface-page)] border border-[var(--ds-color-border-default)] rounded-b-[var(--ds-radius-xl)] shadow-2xl overflow-hidden"
         >
           {antiFraudMenuSections.map((section) => (
             <div key={section.title}>
-              <div className="px-4 py-2 bg-surface-inset border-b border-surface-border">
+              <div className="px-4 py-2 bg-[var(--ds-color-surface-sunken)] border-b border-[var(--ds-color-border-default)]">
                 <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
                   {section.title}
                 </span>
@@ -281,10 +281,10 @@ export default function AppNav() {
                         setAntiFraudOpen(false);
                       }
                     }}
-                    className={`flex flex-col items-center gap-1.5 p-3 rounded-(--m3-shape-sm) transition-colors min-w-[80px] text-left ${
+                    className={`flex flex-col items-center gap-1.5 p-3 rounded-[var(--ds-radius-lg)] transition-colors min-w-[80px] text-left ${
                       item.highlight
                         ? "bg-linear-to-br from-orange-500/20 to-yellow-500/10 hover:from-orange-500/30 hover:to-yellow-500/20 ring-1 ring-orange-500/30"
-                        : "hover:bg-surface-card"
+                        : "hover:bg-[var(--ds-color-surface-default)]"
                     } ${item.route ? "cursor-pointer" : "cursor-default"}`}
                   >
                     <item.icon
@@ -310,10 +310,10 @@ export default function AppNav() {
       {paymentsOpen && (
         <div
           ref={paymentsPanel}
-          className="nav-dark bg-surface-section border-b border-surface-border shadow-xl flex relative z-40"
+          className="nav-dark bg-[var(--ds-color-surface-page)] border-b border-[var(--ds-color-border-default)] shadow-xl flex relative z-40"
         >
           {/* Section sidebar */}
-          <div className="w-[180px] border-r border-surface-border bg-surface-inset py-2 shrink-0">
+          <div className="w-[180px] border-r border-[var(--ds-color-border-default)] bg-[var(--ds-color-surface-sunken)] py-2 shrink-0">
             {paymentsMenuSections.map((section) => (
               <button
                 key={section.title}
@@ -343,10 +343,10 @@ export default function AppNav() {
                         setPaymentsOpen(false);
                       }
                     }}
-                    className={`flex flex-col items-center gap-1.5 p-3 rounded-(--m3-shape-sm) transition-colors min-w-[100px] ${
+                    className={`flex flex-col items-center gap-1.5 p-3 rounded-[var(--ds-radius-lg)] transition-colors min-w-[100px] ${
                       item.highlight
                         ? "bg-linear-to-br from-teal-500/20 to-cyan-500/10 hover:from-teal-500/30 hover:to-cyan-500/20 ring-1 ring-teal-500/30"
-                        : "hover:bg-surface-card"
+                        : "hover:bg-[var(--ds-color-surface-default)]"
                     } ${item.route ? "cursor-pointer" : "cursor-default"}`}
                   >
                     <item.icon

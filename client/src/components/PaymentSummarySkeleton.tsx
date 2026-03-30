@@ -4,7 +4,7 @@ export function PaymentSummarySkeleton() {
   return (
     <section
       aria-label="Payment summary loading"
-      className="bg-surface-card border border-slate-700/50 rounded-(--m3-shape-md) overflow-hidden"
+      className="bg-[var(--ds-color-surface-default)] border border-slate-700/50 rounded-[var(--ds-radius-xl)] overflow-hidden"
     >
       <div className="flex items-center gap-3 px-4 py-2.5">
         <Skeleton width="160px" height="20px" />
@@ -15,12 +15,12 @@ export function PaymentSummarySkeleton() {
         </div>
       </div>
 
-      <div className="border-t border-surface-border p-4">
+      <div className="border-t border-[var(--ds-color-border-default)] p-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-start">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="rounded-(--m3-shape-md) border border-slate-700/50 bg-surface-page flex flex-col overflow-hidden"
+              className="rounded-[var(--ds-radius-xl)] border border-slate-700/50 bg-[var(--ds-color-surface-page)] flex flex-col overflow-hidden"
             >
               <div className="px-4 pt-3 pb-2.5">
                 <div className="flex items-center gap-2.5">
@@ -32,13 +32,13 @@ export function PaymentSummarySkeleton() {
                   <Skeleton width="80px" height="14px" shape="text-line" />
                 </div>
               </div>
-              <div className="w-full flex items-center justify-center gap-1 px-3 py-1.5 border-t border-slate-700/30 bg-surface-inset/50">
+              <div className="w-full flex items-center justify-center gap-1 px-3 py-1.5 border-t border-slate-700/30 bg-[var(--ds-color-surface-sunken)]/50">
                 <Skeleton width="40px" height="12px" shape="text-line" />
               </div>
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-3 gap-4 mt-3 rounded-(--m3-shape-md) border border-slate-700/60 bg-surface-section px-5 py-3">
+        <div className="grid grid-cols-3 gap-4 mt-3 rounded-[var(--ds-radius-xl)] border border-slate-700/60 bg-[var(--ds-color-surface-page)] px-5 py-3">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i}>
               <Skeleton width="70px" height="12px" shape="text-line" className="mb-1.5" />

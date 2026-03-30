@@ -5,7 +5,7 @@ import { CompetitorCard } from "@/components/CompetitorCard";
 
 export function ResearchSection() {
   return (
-    <section id="research" className="py-20 border-t border-slate-800/50 bg-surface-section">
+    <section id="research" className="py-20 border-t border-slate-800/50 bg-[var(--ds-color-surface-page)]">
       <div className="container mx-auto px-6">
         <SectionHeader 
           icon={<Users className="w-8 h-8" />}
@@ -18,15 +18,15 @@ export function ResearchSection() {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-surface-card rounded-(--m3-shape-md) border border-slate-800 overflow-hidden shadow-lg"
+            className="bg-[var(--ds-color-surface-default)] rounded-[var(--ds-radius-xl)] border border-slate-800 overflow-hidden shadow-lg"
           >
-            <div className="px-6 py-4 border-b border-blue-500/30 bg-surface-card">
+            <div className="px-6 py-4 border-b border-blue-500/30 bg-[var(--ds-color-surface-default)]">
               <h3 className="text-white font-medium m-0">Key Personas</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-surface-border">
+                  <tr className="border-b border-[var(--ds-color-border-default)]">
                     <th className="p-4 text-xs uppercase text-slate-400 font-bold w-1/3">Role</th>
                     <th className="p-4 text-xs uppercase text-slate-400 font-bold">Primary Pain Point</th>
                   </tr>
@@ -76,7 +76,7 @@ export function ResearchSection() {
                 The biggest risk isn't market volatility; it's our inability to see the volatility until it's too late.
               </blockquote>
               <div className="mt-6 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-(--m3-shape-full) bg-slate-700 overflow-hidden">
+                <div className="w-12 h-12 rounded-full bg-slate-700 overflow-hidden">
                   <div className="w-full h-full bg-linear-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold">SJ</div>
                 </div>
                 <div>
