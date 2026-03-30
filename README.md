@@ -1,4 +1,4 @@
-# Ripple Treasury — Transaction Status Workflow (TSW)
+# RT-Payments — Transaction Status Workflow (TSW)
 
 Interactive React prototype demonstrating a redesigned payment lifecycle interface for Ripple Treasury, built with Material Design 3 patterns, Ripple brand colors, and Space Grotesk typography.
 
