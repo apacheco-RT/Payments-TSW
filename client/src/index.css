@@ -183,8 +183,7 @@ layer(base);
   @apply relative flex items-center justify-center w-8 h-8 rounded-(--m3-shape-full) bg-surface-elevated text-blue-400 font-bold border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)];
 }
 
-@layer utilities {
-  :root {
+:root {
     /* ── Ripple Brand (baseline from brand.ripple.com) ──────────────────── */
     --ripple-blue: #1e90ff;
     --ripple-blue-dark: #0071e5;
@@ -407,7 +406,6 @@ layer(base);
 
     --sidebar-primary-foreground: hsl(0 0% 100%);
   }
-}
 
 @layer base {
   body {
