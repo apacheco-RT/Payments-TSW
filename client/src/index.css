@@ -1,223 +1,390 @@
+/* DS-Foundation token imports — source of truth for all design tokens */
+/* Note: only the tailwind preset is imported (hex values). The raw CSS files
+   use color(oklch ...) syntax which has limited browser support. Dark-mode
+   semantic overrides are applied via the [data-theme="dark"] block below. */
+@import "@ds-foundation/tokens/tailwind";
+
 /* Space Grotesk = closest available substitute for TT Ripple (Ripple's custom typeface).
    Replace @font-face below with self-hosted TT Ripple files when design system is supplied. */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap')
+layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&[data-theme="dark"], [data-theme="dark"] &);
+
+@theme {
+  --color-risk-critical: #ef4444;
+  --color-risk-high: #f97316;
+  --color-risk-medium: #f59e0b;
+  --color-risk-low: #22c55e;
+  --color-risk-none: #94a3b8;
+
+  --color-stage-create: #6366f1;
+  --color-stage-antifraud: #f97316;
+  --color-stage-approvals: #8b5cf6;
+  --color-stage-status: #0ea5e9;
+  --color-stage-history: #64748b;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: var(--sidebar-primary-border);
+
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: var(--sidebar-accent-border);
+
+  --color-status-online: rgb(34 197 94);
+  --color-status-away: rgb(245 158 11);
+  --color-status-busy: rgb(239 68 68);
+  --color-status-offline: rgb(156 163 175);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility text-gradient {
+  @apply bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-teal-400;
+}
+
+@utility card-gradient {
+  @apply bg-linear-to-br from-[var(--ds-color-surface-default)] to-[var(--ds-color-surface-page)] border border-[hsl(var(--border))];
+}
+
+@utility glass-header {
+  @apply bg-[var(--ds-color-surface-page)]/80 backdrop-blur-md border-b border-[hsl(var(--border))];
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+@utility nav-link {
+  @apply text-sm font-medium text-slate-400 hover:text-white transition-colors duration-200 cursor-pointer;
+
+  &.active {
+    @apply text-blue-400;
+  }
+}
+
+@utility active {
+  &.nav-link {
+    @apply text-blue-400;
+  }
+}
+
+@utility glow-point {
+  @apply relative flex items-center justify-center w-8 h-8 rounded-full bg-[var(--ds-color-surface-raised)] text-blue-400 font-bold border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)];
+}
 
 :root {
-  /* ── Ripple Brand (baseline from brand.ripple.com) ──────────────────── */
-  --ripple-blue:        #1E90FF;
-  --ripple-blue-dark:   #0071E5;
-  --ripple-blue-deeper: #0043A7;
-  --ripple-success:     #53C922;
-  --ripple-error:       #ED346A;
-  --ripple-warning:     #F9731C;
 
-  /* ── Fraud Spotlight Gradient ───────────────────────────────────────── */
-  --fraud-gradient-from: #f43f5e;
-  --fraud-gradient-via:  #F06844;
-  --fraud-gradient-to:   #fb923c;
+    /* ── Severity / Status ───────────────────────────────────────────────── */
+    --status-high: 343 88% 60%; /* Rose   #f43f5e */
+    --status-med: 38 92% 50%; /* Amber  #f59e0b */
+    --status-low: 158 64% 52%; /* Emerald #10b981 */
 
-  /* ── M3 Shape Scale (corner radius) ────────────────────────────────── */
-  --m3-shape-xs:    4px;
-  --m3-shape-sm:    8px;
-  --m3-shape-md:    12px;
-  --m3-shape-lg:    16px;
-  --m3-shape-xl:    28px;
-  --m3-shape-full:  9999px;
+    /* ── TSW Risk Levels ─────────────────────────────────────────────────── */
+    --risk-critical-bg: #fef2f2;
+    --risk-critical-text: #dc2626;
+    --risk-high-bg: #fff7ed;
+    --risk-high-text: #c2410c;
+    --risk-medium-bg: #fffbeb;
+    --risk-medium-text: #b45309;
+    --risk-low-bg: #f0fdf4;
+    --risk-low-text: #166534;
+    --risk-none-bg: #f8fafc;
+    --risk-none-text: #475569;
 
-  /* ── M3 Component Sizing ───────────────────────────────────────────── */
-  --m3-button-height: 40px;
-  --m3-chip-height:   32px;
-  --m3-input-height:  56px;
-  --m3-input-height-dense: 40px;
-  --m3-row-height:    52px;
-  --m3-switch-w:      52px;
-  --m3-switch-h:      32px;
-  --m3-icon-button:   40px;
-  --m3-icon-button-sm: 28px;
-  --m3-fab-small:     40px;
-  --m3-fab:           56px;
-  --m3-nav-item:      56px;
+    /* ── Fraud Spotlight ─────────────────────────────────────────────────── */
+    --spotlight-gradient: linear-gradient(135deg, #f43f5e, #fb923c);
 
-  /* ── M3 Typography Scale (font-size / line-height / weight) ──────── */
-  --m3-display-lg:    3.5625rem;    /* 57px */
-  --m3-display-md:    2.8125rem;    /* 45px */
-  --m3-display-sm:    2.25rem;      /* 36px */
-  --m3-headline-lg:   2rem;         /* 32px */
-  --m3-headline-md:   1.75rem;      /* 28px */
-  --m3-headline-sm:   1.5rem;       /* 24px */
-  --m3-title-lg:      1.375rem;     /* 22px */
-  --m3-title-md:      1rem;         /* 16px */
-  --m3-title-sm:      0.875rem;     /* 14px */
-  --m3-body-lg:       1rem;         /* 16px */
-  --m3-body-md:       0.875rem;     /* 14px */
-  --m3-body-sm:       0.75rem;      /* 12px */
-  --m3-label-lg:      0.875rem;     /* 14px */
-  --m3-label-md:      0.75rem;      /* 12px */
-  --m3-label-sm:      0.6875rem;    /* 11px */
+    /* Base mapping for Shadcn/Tailwind */
+    --background: 0 0% 100%;
+    --foreground: 210 25% 7.8431%;
 
-  /* ── M3 Spacing ──────────────────────────────────────────────────── */
-  --m3-spacing-xs:    4px;
-  --m3-spacing-sm:    8px;
-  --m3-spacing-md:    12px;
-  --m3-spacing-lg:    16px;
-  --m3-spacing-xl:    24px;
-  --m3-spacing-2xl:   32px;
-  --m3-spacing-3xl:   48px;
+    --card: 180 6.6667% 97.0588%;
+    --card-foreground: 210 25% 7.8431%;
 
-  /* ── M3 Padding (component-specific) ─────────────────────────────── */
-  --m3-card-padding:      16px;
-  --m3-dialog-padding:    24px;
-  --m3-button-padding-h:  24px;
-  --m3-button-padding-sm: 16px;
-  --m3-chip-padding-h:    16px;
-  --m3-cell-padding-h:    16px;
-  --m3-nav-padding-h:     12px;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 25% 7.8431%;
 
-  /* ── M3 Elevation (tonal, not shadow—uses surface color shift) ───── */
-  --m3-elevation-0: transparent;
-  --m3-elevation-1: rgba(255,255,255,0.05);
-  --m3-elevation-2: rgba(255,255,255,0.08);
-  --m3-elevation-3: rgba(255,255,255,0.11);
-  --m3-elevation-4: rgba(255,255,255,0.12);
-  --m3-elevation-5: rgba(255,255,255,0.14);
+    --primary: 203.8863 88.2845% 53.1373%;
+    --primary-foreground: 0 0% 100%;
 
-  /* ── M3 State Layers ───────────────────────────────────────────────── */
-  --m3-state-hover:   rgba(255,255,255,0.08);
-  --m3-state-focus:   rgba(255,255,255,0.12);
-  --m3-state-pressed: rgba(255,255,255,0.12);
-  --m3-state-dragged: rgba(255,255,255,0.16);
+    --secondary: 210 25% 7.8431%;
+    --secondary-foreground: 0 0% 100%;
 
-  /* ── Surface tokens (dark mode defaults) ─────────────────────────────── */
-  --surface-page:      218 56% 13%;   /* #0f1e35 — page background           */
-  --surface-card:      218 48% 18%;   /* #162a47 — card / panel background   */
-  --surface-elevated:  218 44% 32%;   /* #2d4a77 — tooltips, dropdowns       */
-  --surface-inset:     218 60% 10%;   /* #0a1628 — form inputs, deep inset   */
-  --surface-section:   218 57% 12%;   /* #0d1c30 — breadcrumbs, alternates   */
-  --surface-deep:      216 60% 5%;    /* #050b14 — footer                    */
-  --surface-row-hover: 218 54% 16%;   /* #132640 — table row hover           */
-  --surface-border:    218 47% 22%;   /* #1a3455 — borders throughout        */
+    --muted: 240 1.9608% 90%;
+    --muted-foreground: 210 25% 7.8431%;
 
-  /* Legacy aliases — resolve through surface tokens automatically */
-  --navy-dark:  var(--surface-page);
-  --navy-mid:   var(--surface-card);
-  --navy-light: var(--surface-elevated);
+    --accent: 211.5789 51.3514% 92.7451%;
+    --accent-foreground: 203.8863 88.2845% 53.1373%;
 
-  /* ── Brand accents ───────────────────────────────────────────────────── */
-  --primary-blue: 217 91% 60%; /* #3b82f6 */
-  --accent-teal: 173 80% 40%;  /* #14b8a6 */
-  --accent-purple: 262 83% 66%; /* #8b5cf6 */
+    --destructive: 356.3033 90.5579% 54.3137%;
+    --destructive-foreground: 0 0% 100%;
 
-  --text-primary: 210 40% 98%; /* #f8fafc */
-  --text-secondary: 215 20% 65%; /* #94a3b8 — ≈ 7.1:1 on surface-page */
-  --text-tertiary: 215 17% 62%; /* #8e9eb0 — ≈ 6.3:1 on surface-page, ≈ 4.7:1 on surface-card */
+    --border: 201.4286 30.4348% 90.9804%;
+    --input: 200 23.0769% 97.451%;
+    --ring: 202.8169 89.1213% 53.1373%;
 
-  /* ── Severity / Status ───────────────────────────────────────────────── */
-  --status-high: 343 88% 60%;  /* Rose   #f43f5e */
-  --status-med: 38 92% 50%;    /* Amber  #f59e0b */
-  --status-low: 158 64% 52%;   /* Emerald #10b981 */
+    --radius: 1.3rem;
 
-  /* ── TSW Risk Levels ─────────────────────────────────────────────────── */
-  --risk-critical-bg:     #fef2f2; --risk-critical-text: #dc2626;
-  --risk-high-bg:         #fff7ed; --risk-high-text:     #c2410c;
-  --risk-medium-bg:       #fffbeb; --risk-medium-text:   #b45309;
-  --risk-low-bg:          #f0fdf4; --risk-low-text:      #166534;
-  --risk-none-bg:         #f8fafc; --risk-none-text:     #475569;
+    --shadow:
+      0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+      0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0);
 
-  /* ── Fraud Spotlight ─────────────────────────────────────────────────── */
-  --spotlight-gradient: linear-gradient(135deg, #f43f5e, #fb923c);
+    --chart-1: hsl(203.8863 88.2845% 53.1373%);
 
-  /* Base mapping for Shadcn/Tailwind */
-  --background: 0 0% 100%;
-  --foreground: 210 25% 7.8431%;
-  
-  --card: 180 6.6667% 97.0588%;
-  --card-foreground: 210 25% 7.8431%;
-  
-  --popover: 0 0% 100%;
-  --popover-foreground: 210 25% 7.8431%;
-  
+    --chart-2: hsl(159.7826 100% 36.0784%);
+
+    --chart-3: hsl(42.029 92.8251% 56.2745%);
+
+    --chart-4: hsl(147.1429 78.5047% 41.9608%);
+
+    --chart-5: hsl(341.4894 75.2% 50.9804%);
+
+    --sidebar: hsl(180 6.6667% 97.0588%);
+
+    --spacing: 0.25rem;
+
+    --font-mono: 'JetBrains Mono', Menlo, monospace;
+
+    /* TT Ripple is Ripple's typeface — swap in self-hosted files when available */
+    --font-sans: 'TT Ripple', 'Space Grotesk', Inter, -apple-system, sans-serif;
+
+    --shadow-lg:
+      0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+      0px 4px 6px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+
+    --shadow-md:
+      0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+      0px 2px 4px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+
+    --shadow-sm:
+      0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+      0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+
+    --shadow-xl:
+      0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
+      0px 8px 10px -1px hsl(202.8169 89.1213% 53.1373% / 0);
+
+    --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
+
+    --font-serif: Georgia, serif;
+
+    --shadow-2xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
+
+    --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
+
+    --sidebar-ring: hsl(202.8169 89.1213% 53.1373%);
+
+    --sidebar-accent: hsl(211.5789 51.3514% 92.7451%);
+
+    --sidebar-border: hsl(205 25% 90.5882%);
+
+    --sidebar-primary: hsl(203.8863 88.2845% 53.1373%);
+
+    --tracking-normal: 0em;
+
+    --sidebar-foreground: hsl(210 25% 7.8431%);
+
+    --sidebar-accent-foreground: hsl(203.8863 88.2845% 53.1373%);
+
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+  }
+
+/* DS-Foundation semantic token overrides for dark mode.
+   Primitive vars (--ds-color-neutral-*, --ds-color-blue-*, etc.) are already
+   defined in :root by the tailwind preset (hex). These semantic vars point to
+   those primitives, so they resolve correctly without color(oklch) support. */
+[data-theme="dark"] {
+  --ds-color-brand-primary: var(--ds-color-blue-400);
+  --ds-color-brand-primary-hover: var(--ds-color-blue-300);
+  --ds-color-brand-primary-active: var(--ds-color-blue-200);
+  --ds-color-brand-primary-subtle: var(--ds-color-blue-950);
+  --ds-color-brand-primary-on: var(--ds-color-neutral-900);
+  --ds-color-brand-secondary: var(--ds-color-violet-400);
+  --ds-color-brand-secondary-hover: var(--ds-color-violet-300);
+  --ds-color-brand-secondary-subtle: var(--ds-color-violet-950);
+  --ds-color-brand-secondary-on: var(--ds-color-neutral-900);
+  --ds-color-surface-page: var(--ds-color-neutral-950);
+  --ds-color-surface-default: var(--ds-color-neutral-900);
+  --ds-color-surface-raised: var(--ds-color-neutral-800);
+  --ds-color-surface-overlay: var(--ds-color-neutral-800);
+  --ds-color-surface-sunken: var(--ds-color-neutral-950);
+  --ds-color-surface-disabled: var(--ds-color-neutral-800);
+  --ds-color-text-primary: var(--ds-color-neutral-50);
+  --ds-color-text-secondary: var(--ds-color-neutral-400);
+  --ds-color-text-tertiary: var(--ds-color-neutral-600);
+  --ds-color-text-disabled: var(--ds-color-neutral-700);
+  --ds-color-text-inverse: var(--ds-color-neutral-900);
+  --ds-color-text-on-brand: var(--ds-color-neutral-900);
+  --ds-color-text-link: var(--ds-color-blue-400);
+  --ds-color-text-link-hover: var(--ds-color-blue-300);
+  --ds-color-border-default: var(--ds-color-neutral-700);
+  --ds-color-border-strong: var(--ds-color-neutral-500);
+  --ds-color-border-focus: var(--ds-color-blue-400);
+  --ds-color-border-error: var(--ds-color-red-400);
+  --ds-color-border-disabled: var(--ds-color-neutral-700);
+  --ds-color-feedback-success-text: var(--ds-color-green-400);
+  --ds-color-feedback-success-bg: var(--ds-color-green-950);
+  --ds-color-feedback-success-border: var(--ds-color-green-700);
+  --ds-color-feedback-success-icon: var(--ds-color-green-400);
+  --ds-color-feedback-error-text: var(--ds-color-red-400);
+  --ds-color-feedback-error-bg: var(--ds-color-red-950);
+  --ds-color-feedback-error-border: var(--ds-color-red-700);
+  --ds-color-feedback-error-icon: var(--ds-color-red-400);
+  --ds-color-feedback-warning-text: var(--ds-color-amber-400);
+  --ds-color-feedback-warning-bg: var(--ds-color-amber-950);
+  --ds-color-feedback-warning-border: var(--ds-color-amber-700);
+  --ds-color-feedback-warning-icon: var(--ds-color-amber-400);
+  --ds-color-feedback-info-text: var(--ds-color-blue-400);
+  --ds-color-feedback-info-bg: var(--ds-color-blue-950);
+  --ds-color-feedback-info-border: var(--ds-color-blue-700);
+  --ds-color-feedback-info-icon: var(--ds-color-blue-400);
+  --ds-color-interactive-default: var(--ds-color-neutral-50);
+  --ds-color-interactive-hover: var(--ds-color-neutral-200);
+  --ds-color-interactive-active: var(--ds-color-neutral-100);
+  --ds-color-interactive-focus: var(--ds-color-blue-400);
+  --ds-color-interactive-disabled: var(--ds-color-neutral-700);
+  --ds-color-interactive-selected: var(--ds-color-blue-400);
+  --ds-color-interactive-selected-bg: var(--ds-color-blue-950);
+}
+
+/* Shadcn semantic token overrides for dark mode */
+[data-theme="dark"] {
+  --background: 222 84% 5%;
+  --foreground: 210 40% 98%;
+
+  --card: 222 84% 8%;
+  --card-foreground: 210 40% 98%;
+  --card-border: 217 33% 14%;
+
+  --popover: 222 84% 8%;
+  --popover-foreground: 210 40% 98%;
+  --popover-border: 217 33% 14%;
+
   --primary: 203.8863 88.2845% 53.1373%;
   --primary-foreground: 0 0% 100%;
-  
-  --secondary: 210 25% 7.8431%;
-  --secondary-foreground: 0 0% 100%;
-  
-  --muted: 240 1.9608% 90%;
-  --muted-foreground: 210 25% 7.8431%;
-  
-  --accent: 211.5789 51.3514% 92.7451%;
+
+  --secondary: 217 33% 14%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217 33% 12%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 217 33% 14%;
   --accent-foreground: 203.8863 88.2845% 53.1373%;
-  
-  --destructive: 356.3033 90.5579% 54.3137%;
+
+  --destructive: 356 90% 54%;
   --destructive-foreground: 0 0% 100%;
 
-  --border: 201.4286 30.4348% 90.9804%;
-  --input: 200 23.0769% 97.4510%;
-  --ring: 202.8169 89.1213% 53.1373%;
-  
-  --radius: 1.3rem;
-  
-  --shadow: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
-  
-  --chart-1: hsl(203.8863 88.2845% 53.1373%);
-  
-  --chart-2: hsl(159.7826 100% 36.0784%);
-  
-  --chart-3: hsl(42.0290 92.8251% 56.2745%);
-  
-  --chart-4: hsl(147.1429 78.5047% 41.9608%);
-  
-  --chart-5: hsl(341.4894 75.2000% 50.9804%);
-  
-  --sidebar: hsl(180 6.6667% 97.0588%);
-  
-  --spacing: 0.25rem;
-  
-  --font-mono: "JetBrains Mono", Menlo, monospace;
+  --border: 217 33% 14%;
+  --input: 217 33% 14%;
+  --ring: 203.8863 88.2845% 53.1373%;
 
-  /* TT Ripple is Ripple's typeface — swap in self-hosted files when available */
-  --font-sans: "TT Ripple", "Space Grotesk", Inter, -apple-system, sans-serif;
-  
-  --shadow-lg: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 4px 6px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
-  
-  --shadow-md: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 2px 4px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
-  
-  --shadow-sm: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
-  
-  --shadow-xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 8px 10px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
-  
-  --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
-  
-  --font-serif: Georgia, serif;
-  
-  --shadow-2xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
-  
-  --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
-  
-  --sidebar-ring: hsl(202.8169 89.1213% 53.1373%);
-  
-  --sidebar-accent: hsl(211.5789 51.3514% 92.7451%);
-  
-  --sidebar-border: hsl(205.0000 25.0000% 90.5882%);
-  
+  --sidebar: 222 84% 6%;
+  --sidebar-foreground: hsl(210 40% 98%);
+  --sidebar-border: hsl(217 33% 14%);
   --sidebar-primary: hsl(203.8863 88.2845% 53.1373%);
-  
-  --tracking-normal: 0em;
-  
-  --sidebar-foreground: hsl(210 25% 7.8431%);
-  
-  --sidebar-accent-foreground: hsl(203.8863 88.2845% 53.1373%);
-  
   --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(217 33% 14%);
+  --sidebar-accent-foreground: hsl(203.8863 88.2845% 53.1373%);
+  --sidebar-ring: hsl(203.8863 88.2845% 53.1373%);
 }
 
 @layer base {
   body {
-    @apply bg-surface-page text-[hsl(var(--text-primary))] font-sans antialiased selection:bg-blue-500/30;
+    @apply bg-[var(--ds-color-surface-page)] text-[var(--ds-color-text-primary)] font-sans antialiased selection:bg-blue-500/30;
     background-image: 
       radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
       radial-gradient(circle at 100% 0%, rgba(20, 184, 166, 0.1) 0%, transparent 40%);
@@ -241,180 +408,122 @@
   }
   
   p {
-    @apply text-[hsl(var(--text-secondary))] leading-relaxed;
+    @apply text-[var(--ds-color-text-secondary)] leading-relaxed;
   }
-}
-
-.m3-select {
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 5 3 3 3-3'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  padding-right: 28px;
-}
-
-.m3-date::-webkit-calendar-picker-indicator {
-  opacity: 0;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}
-
-.m3-date::-webkit-datetime-edit {
-  padding-right: 0;
-}
-
-.m3-date::-webkit-date-and-time-value {
-  text-align: left;
-}
-
-.m3-date::-moz-focus-inner {
-  border: 0;
-}
-
-select option {
-  background-color: hsl(218 48% 18%);
-  color: #e2e8f0;
-}
-
-html.light-mode select option {
-  background-color: #ffffff;
-  color: #1e293b;
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400;
-  }
-  
-  .card-gradient {
-    @apply bg-gradient-to-br from-surface-card to-surface-page border border-[hsl(var(--border))];
-  }
-  
-  .glass-header {
-    @apply bg-surface-page/80 backdrop-blur-md border-b border-[hsl(var(--border))];
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-    will-change: transform;
+  .m3-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 5 3 3 3-3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
   }
 
-  .nav-link {
-    @apply text-sm font-medium text-slate-400 hover:text-white transition-colors duration-200 cursor-pointer;
+  .m3-date::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
   }
-  
-  .nav-link.active {
-    @apply text-blue-400;
+
+  .m3-date::-webkit-datetime-edit {
+    padding-right: 0;
   }
-  
-  .glow-point {
-    @apply relative flex items-center justify-center w-8 h-8 rounded-[var(--m3-shape-full)] bg-surface-elevated text-blue-400 font-bold border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)];
+
+  .m3-date::-webkit-date-and-time-value {
+    text-align: left;
+  }
+
+  .m3-date::-moz-focus-inner {
+    border: 0;
+  }
+
+  select option {
+    background-color: hsl(218 48% 18%);
+    color: #e2e8f0;
+  }
+
+  [data-theme="light"] select option {
+    background-color: #ffffff;
+    color: #1e293b;
   }
 }
 
 /* ══ Light Mode Overrides ═══════════════════════════════════════════════ */
 
-html.light-mode {
-  --m3-state-hover:   rgba(0,0,0,0.08);
-  --m3-state-focus:   rgba(0,0,0,0.12);
-  --m3-state-pressed: rgba(0,0,0,0.12);
-  --m3-state-dragged: rgba(0,0,0,0.16);
-  --m3-elevation-1: rgba(0,0,0,0.05);
-  --m3-elevation-2: rgba(0,0,0,0.08);
-  --m3-elevation-3: rgba(0,0,0,0.11);
-  --surface-page:      210 40% 97%;   /* #f1f5f9 slate-100 */
-  --surface-card:      0 0% 100%;     /* #ffffff           */
-  --surface-elevated:  213 27% 84%;   /* #cbd5e1 slate-300 */
-  --surface-inset:     210 40% 98%;   /* #f8fafc slate-50  */
-  --surface-section:   220 14% 96%;   /* #f3f4f6 gray-100  */
-  --surface-deep:      210 40% 97%;   /* #f1f5f9 slate-100 */
-  --surface-row-hover: 220 13% 93%;   /* #edf2f7           */
-  --surface-border:    213 27% 84%;   /* #cbd5e1 slate-300 */
-  --text-primary:      222 47% 11%;   /* #0f172a slate-900 */
-  --text-secondary:    215 16% 47%;   /* #64748b slate-500 — ≈ 5.3:1 on white */
-  --text-tertiary:     215 14% 34%;   /* #4b5563 gray-600  — ≈ 6.6:1 on white */
-}
-
-html.light-mode body {
+[data-theme="light"] body {
   background-image:
     radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
     radial-gradient(circle at 100% 0%, rgba(20, 184, 166, 0.04) 0%, transparent 40%);
 }
 
-html.light-mode h1,
-html.light-mode h2,
-html.light-mode h3,
-html.light-mode h4,
-html.light-mode h5,
-html.light-mode h6 {
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6 {
   color: #0f172a;
 }
 
 /* ── Nav / header ─── */
-html.light-mode .glass-header {
+[data-theme="light"] .glass-header {
   background-color: rgba(241, 245, 249, 0.92) !important;
   border-bottom-color: #cbd5e1 !important;
 }
 
 /* ── Slate utility backgrounds ─── */
-html.light-mode [class*="bg-slate-900"] { background-color: #f1f5f9 !important; }
-html.light-mode [class*="bg-slate-800"] { background-color: #e2e8f0 !important; }
-html.light-mode [class*="bg-slate-700"] { background-color: #f1f5f9 !important; }
+[data-theme="light"] [class*="bg-slate-900"] { background-color: #f1f5f9 !important; }
+[data-theme="light"] [class*="bg-slate-800"] { background-color: #e2e8f0 !important; }
+[data-theme="light"] [class*="bg-slate-700"] { background-color: #f1f5f9 !important; }
 
 /* ── Borders ─── */
-html.light-mode .border-l-teal-400 { border-color: #0f766e !important; }
-html.light-mode [class*="border-slate-800"] { border-color: #cbd5e1 !important; }
-html.light-mode [class*="border-slate-700"] { border-color: #e2e8f0 !important; }
+[data-theme="light"] .border-l-teal-400 { border-color: #0f766e !important; }
+[data-theme="light"] [class*="border-slate-800"] { border-color: #cbd5e1 !important; }
+[data-theme="light"] [class*="border-slate-700"] { border-color: #e2e8f0 !important; }
 
 /* ── White text — flip to dark for content on light surfaces ─── */
-html.light-mode .text-white { color: #0f172a !important; }
+[data-theme="light"] .text-white { color: #0f172a !important; }
 
 /* Restore white text on gradient buttons/badges (same element has both classes) */
-html.light-mode [class*="from-teal"].text-white,
-html.light-mode [class*="from-blue"].text-white,
-html.light-mode [class*="from-purple"].text-white,
-html.light-mode [class*="from-rose"].text-white,
-html.light-mode [class*="from-amber"].text-white,
-html.light-mode [class*="from-emerald"].text-white,
-html.light-mode [class*="from-indigo"].text-white {
+[data-theme="light"] [class*="from-teal"].text-white,
+[data-theme="light"] [class*="from-blue"].text-white,
+[data-theme="light"] [class*="from-purple"].text-white,
+[data-theme="light"] [class*="from-rose"].text-white,
+[data-theme="light"] [class*="from-amber"].text-white,
+[data-theme="light"] [class*="from-emerald"].text-white,
+[data-theme="light"] [class*="from-indigo"].text-white {
   color: #ffffff !important;
 }
 
 /* Fraud spotlight gradient is an inline style (not a Tailwind class), so the
    [class*="from-rose"] selector above won't match. Restore white text explicitly. */
-html.light-mode .fraud-gradient-header .text-white { color: #ffffff !important; }
+[data-theme="light"] .fraud-gradient-header .text-white { color: #ffffff !important; }
 
 /* ── Top nav: stays dark in both light and dark modes ────────────────────── */
-/* Override surface tokens back to dark values inside nav-dark context */
-html.light-mode .nav-dark {
-  --surface-page:    218 56% 13%;
-  --surface-inset:   218 60% 10%;
-  --surface-section: 218 57% 12%;
-  --surface-card:    218 48% 18%;
-  --surface-border:  218 47% 22%;
-}
-html.light-mode .nav-dark .text-slate-300              { color: #cbd5e1 !important; }
-html.light-mode .nav-dark .text-slate-400,
-html.light-mode .nav-dark .text-slate-500              { color: #94a3b8 !important; }
-html.light-mode .nav-dark .text-teal-400               { color: #2dd4bf !important; }
-html.light-mode .nav-dark .hover\:text-slate-200:hover { color: #e2e8f0 !important; }
-html.light-mode .nav-dark { --text-secondary: 215 20% 65%; --text-tertiary: 215 17% 62%; }
+[data-theme="light"] .nav-dark .text-slate-300              { color: #cbd5e1 !important; }
+[data-theme="light"] .nav-dark .text-slate-400,
+[data-theme="light"] .nav-dark .text-slate-500              { color: #94a3b8 !important; }
+[data-theme="light"] .nav-dark .text-teal-400               { color: #2dd4bf !important; }
+[data-theme="light"] .nav-dark .hover\:text-slate-200:hover { color: #e2e8f0 !important; }
 /* White SVG wordmark: stays white on the dark nav in both modes — no invert */
-html.light-mode .nav-dark .nav-logo                    { filter: none !important; }
+[data-theme="light"] .nav-dark .nav-logo                    { filter: none !important; }
 /* Fallback: white logo on a light nav (nav-dark not present) gets inverted */
-html.light-mode .nav-logo                              { filter: invert(1); }
+[data-theme="light"] .nav-logo                              { filter: invert(1); }
 
 /* Breadcrumb bar: background flips to light in light-mode (via bg-[#0d1c30] rule above);
    white/opacity text variants must flip to legible dark equivalents */
-html.light-mode .breadcrumb-bar span { color: #6b7280; }
-html.light-mode .breadcrumb-bar span[aria-current="page"] { color: #1e293b; font-weight: 600; }
-html.light-mode .breadcrumb-bar svg { color: #9ca3af; }
-html.light-mode .breadcrumb-bar { border-color: #e2e8f0 !important; }
-html.light-mode .breadcrumb-bar span:hover { color: #1e293b !important; }
+[data-theme="light"] .breadcrumb-bar span { color: #6b7280; }
+[data-theme="light"] .breadcrumb-bar span[aria-current="page"] { color: #1e293b; font-weight: 600; }
+[data-theme="light"] .breadcrumb-bar svg { color: #9ca3af; }
+[data-theme="light"] .breadcrumb-bar { border-color: #e2e8f0 !important; }
+[data-theme="light"] .breadcrumb-bar span:hover { color: #1e293b !important; }
 /* Breadcrumb <a> elements (e.g. wouter Link) — same dark treatment as spans */
-html.light-mode .breadcrumb-bar a { color: #6b7280 !important; }
-html.light-mode .breadcrumb-bar a:hover { color: #1e293b !important; }
+[data-theme="light"] .breadcrumb-bar a { color: #6b7280 !important; }
+[data-theme="light"] .breadcrumb-bar a:hover { color: #1e293b !important; }
 
 /* Hide scrollbar on nav overflow but keep scroll functionality */
 .scrollbar-none { scrollbar-width: none; }
@@ -423,94 +532,94 @@ html.light-mode .breadcrumb-bar a:hover { color: #1e293b !important; }
 /* ── Dark color-scheme for native form controls ──────────────────────────── */
 /* Without this, Chrome macOS renders calendar icons, select arrows, and
    spinner buttons in light-mode system colors even on dark backgrounds.     */
-.bg-surface-page input,
-.bg-surface-page select,
-.bg-surface-page textarea {
+:not([data-theme="light"]) input,
+:not([data-theme="light"]) select,
+:not([data-theme="light"]) textarea {
   color-scheme: dark;
 }
 
 /* ── Hover states — white/2 and white/3 overlays are invisible in light mode ─── */
-html.light-mode [class*="hover:bg-white\/2"]:hover { background-color: rgba(0, 0, 0, 0.04) !important; }
-html.light-mode [class*="hover:bg-white\/3"]:hover { background-color: rgba(0, 0, 0, 0.06) !important; }
+[data-theme="light"] [class*="hover:bg-white\/2"]:hover { background-color: rgba(0, 0, 0, 0.04) !important; }
+[data-theme="light"] [class*="hover:bg-white\/3"]:hover { background-color: rgba(0, 0, 0, 0.06) !important; }
 /* Process Flow selected stage: bg-white/5 (5% white) is invisible on light surfaces.
    Use exact class selector (.bg-white\/5) not substring (*=) to avoid matching bg-white/50 etc. */
-html.light-mode .bg-white\/5 { background-color: rgba(0, 0, 0, 0.04) !important; }
+[data-theme="light"] .bg-white\/5 { background-color: rgba(0, 0, 0, 0.04) !important; }
 
 /* ── color-scheme: restore to light for form controls in light mode ─── */
-html.light-mode .bg-surface-page input,
-html.light-mode .bg-surface-page select,
-html.light-mode .bg-surface-page textarea {
+[data-theme="light"] input,
+[data-theme="light"] select,
+[data-theme="light"] textarea {
   color-scheme: light;
 }
 
 /* ── Slate text — single authoritative set (was duplicated causing conflicts) ─── */
-html.light-mode .text-slate-200 { color: #1e293b !important; }  /* slate-800 */
-html.light-mode .text-slate-300 { color: #374151 !important; }  /* gray-700  */
-html.light-mode .text-slate-400 { color: #4b5563 !important; }  /* gray-600  */
-html.light-mode .text-slate-500 { color: #6b7280 !important; }  /* gray-500  */
-html.light-mode .text-slate-600 { color: #6b7280 !important; }  /* gray-500  ≈ 5.3:1 */
-html.light-mode .hover\:text-white:hover { color: #0f172a !important; }
+[data-theme="light"] .text-slate-200 { color: #1e293b !important; }  /* slate-800 */
+[data-theme="light"] .text-slate-300 { color: #374151 !important; }  /* gray-700  */
+[data-theme="light"] .text-slate-400 { color: #4b5563 !important; }  /* gray-600  */
+[data-theme="light"] .text-slate-500 { color: #6b7280 !important; }  /* gray-500  */
+[data-theme="light"] .text-slate-600 { color: #6b7280 !important; }  /* gray-500  ≈ 5.3:1 */
+[data-theme="light"] .hover\:text-white:hover { color: #0f172a !important; }
 
 /* ── Coloured text — darken to ≥ 4.5:1 contrast on light backgrounds ─── */
 /* Teal: teal-400/300 (#2dd4bf / #5eead4) ≈ 1.5:1 on white → darken to teal-700 (#0f766e) ≈ 5.5:1 */
-html.light-mode .text-teal-300,
-html.light-mode .text-teal-400 { color: #0f766e !important; }
+[data-theme="light"] .text-teal-300,
+[data-theme="light"] .text-teal-400 { color: #0f766e !important; }
 
 /* Rose: rose-400/300 ≈ 3.7:1 / 2.5:1 on white → darken to rose-600 (#e11d48) ≈ 6:1 */
-html.light-mode .text-rose-300,
-html.light-mode .text-rose-400 { color: #e11d48 !important; }
+[data-theme="light"] .text-rose-300,
+[data-theme="light"] .text-rose-400 { color: #e11d48 !important; }
 
 /* Amber: amber-400/300 ≈ 1.8:1 / 1.5:1 on white → darken to amber-700 (#b45309) ≈ 6:1 */
-html.light-mode .text-amber-300,
-html.light-mode .text-amber-400 { color: #b45309 !important; }
+[data-theme="light"] .text-amber-300,
+[data-theme="light"] .text-amber-400 { color: #b45309 !important; }
 
 /* Emerald: emerald-400/300 ≈ 2.5:1 / 1.7:1 on white → darken to emerald-700 (#047857) ≈ 5:1 */
-html.light-mode .text-emerald-300,
-html.light-mode .text-emerald-400 { color: #047857 !important; }
+[data-theme="light"] .text-emerald-300,
+[data-theme="light"] .text-emerald-400 { color: #047857 !important; }
 
 /* Orange: orange-400 ≈ 2.0:1 on white → darken to orange-700 (#c2410c) ≈ 5:1 */
-html.light-mode .text-orange-400 { color: #c2410c !important; }
+[data-theme="light"] .text-orange-400 { color: #c2410c !important; }
 
 /* Blue/Sky/Purple: already readable but boost to accessible dark variants */
-html.light-mode .text-blue-300,
-html.light-mode .text-blue-400   { color: #1d4ed8 !important; }  /* blue-700   ≈ 5:1 */
-html.light-mode .text-sky-300    { color: #0369a1 !important; }  /* sky-700    ≈ 5:1 */
-html.light-mode .text-purple-300 { color: #6d28d9 !important; }  /* purple-700 ≈ 5:1 */
+[data-theme="light"] .text-blue-300,
+[data-theme="light"] .text-blue-400   { color: #1d4ed8 !important; }  /* blue-700   ≈ 5:1 */
+[data-theme="light"] .text-sky-300    { color: #0369a1 !important; }  /* sky-700    ≈ 5:1 */
+[data-theme="light"] .text-purple-300 { color: #6d28d9 !important; }  /* purple-700 ≈ 5:1 */
 
 /* Red: red-400 (#f87171) = 3.2:1 on white → darken to red-600 (#dc2626) ≈ 5.1:1 */
-html.light-mode .text-red-400 { color: #dc2626 !important; }
+[data-theme="light"] .text-red-400 { color: #dc2626 !important; }
 
 /* Orange/Red/Indigo -300 variants used by new status chips */
-html.light-mode .text-orange-300 { color: #c2410c !important; }  /* orange-700 ≈ 5:1 */
-html.light-mode .text-red-300    { color: #dc2626 !important; }  /* red-600    ≈ 5:1 */
-html.light-mode .text-indigo-300 { color: #4338ca !important; }  /* indigo-700 ≈ 6:1 */
+[data-theme="light"] .text-orange-300 { color: #c2410c !important; }  /* orange-700 ≈ 5:1 */
+[data-theme="light"] .text-red-300    { color: #dc2626 !important; }  /* red-600    ≈ 5:1 */
+[data-theme="light"] .text-indigo-300 { color: #4338ca !important; }  /* indigo-700 ≈ 6:1 */
 
 /* ── bg-white opacity variants invisible on light surfaces ─────────────── */
 /* bg-white/15 and bg-white/20 are used for icon/badge overlays in the
    FraudSpotlight gradient header — map to a subtle dark tint instead.    */
-html.light-mode [class*="bg-white\/15"] { background-color: rgba(0,0,0,0.05) !important; }
-html.light-mode [class*="bg-white\/20"] { background-color: rgba(0,0,0,0.06) !important; }
+[data-theme="light"] [class*="bg-white\/15"] { background-color: rgba(0,0,0,0.05) !important; }
+[data-theme="light"] [class*="bg-white\/20"] { background-color: rgba(0,0,0,0.06) !important; }
 
 /* ── border-white opacity variants vanish on light surfaces ────────────── */
-html.light-mode [class*="border-white\/10"] { border-color: #e2e8f0 !important; }
-html.light-mode [class*="border-white\/25"] { border-color: #cbd5e1 !important; }
+[data-theme="light"] [class*="border-white\/10"] { border-color: #e2e8f0 !important; }
+[data-theme="light"] [class*="border-white\/25"] { border-color: #cbd5e1 !important; }
 
 /* ── Solid-colour badges with text-white — restore white text ─────────── */
 /* e.g. RLUSD badge: <span class="bg-teal-500 text-white">,
    status chip fill backgrounds from orange/rose/amber/blue/emerald etc.  */
-html.light-mode [class*="bg-teal-500"].text-white,
-html.light-mode [class*="bg-rose-500"].text-white,
-html.light-mode [class*="bg-amber-500"].text-white,
-html.light-mode [class*="bg-blue-500"].text-white,
-html.light-mode [class*="bg-emerald-500"].text-white,
-html.light-mode [class*="bg-orange-500"].text-white,
-html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important; }
+[data-theme="light"] [class*="bg-teal-500"].text-white,
+[data-theme="light"] [class*="bg-rose-500"].text-white,
+[data-theme="light"] [class*="bg-amber-500"].text-white,
+[data-theme="light"] [class*="bg-blue-500"].text-white,
+[data-theme="light"] [class*="bg-emerald-500"].text-white,
+[data-theme="light"] [class*="bg-orange-500"].text-white,
+[data-theme="light"] [class*="bg-indigo-500"].text-white { color: #ffffff !important; }
 
 /* ══ Export / Print Page Styles ═════════════════════════════════════════ */
 
 .export-root {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   color: #0f172a;
   background: #ffffff;
   max-width: 960px;
@@ -534,13 +643,13 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
   gap: 16px;
 }
 .print-bar-title { color: #f8fafc; font-size: 13px; font-weight: 600; margin: 0 0 2px; }
-.print-bar-sub   { color: #64748b; font-size: 11px; margin: 0; }
+.print-bar-sub   { color: #94a3b8; font-size: 12px; margin: 0; }
 .print-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: #14b8a6;
+  background: #0f766e;
   color: #ffffff;
   border: none;
   border-radius: 6px;
@@ -566,11 +675,11 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
   color: white;
 }
 .cover-inner { padding: 40px 0; }
-.cover-tag      { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #14b8a6; margin: 0 0 8px; }
+.cover-tag      { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #2dd4bf; margin: 0 0 8px; }
 .cover-title    { font-size: 32px; font-weight: 800; color: #ffffff; margin: 0 0 6px; line-height: 1.1; }
 .cover-subtitle { font-size: 16px; color: #94a3b8; margin: 0 0 20px; }
-.cover-meta     { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 11px; color: #64748b; margin-bottom: 28px; }
-.toc-label      { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin: 0 0 6px; }
+.cover-meta     { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12px; color: #94a3b8; margin-bottom: 28px; }
+.toc-label      { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; margin: 0 0 6px; }
 .toc-list       { margin: 0; padding-left: 16px; color: #94a3b8; line-height: 1.8; font-size: 12px; }
 
 /* Section headers */
@@ -594,7 +703,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
 .section-badge.purple { background: #ede9fe; color: #7c3aed; }
 .section-badge.orange { background: #ffedd5; color: #c2410c; }
 .section-title  { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 4px; }
-.section-sub    { font-size: 11px; color: #64748b; margin: 0; }
+.section-sub    { font-size: 12px; color: #64748b; margin: 0; }
 
 /* Tables */
 .data-table {
@@ -606,7 +715,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
   background: #f1f5f9;
   color: #475569;
   font-weight: 700;
-  font-size: 9.5px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   padding: 7px 8px;
@@ -626,7 +735,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
 .mono  { font-family: 'JetBrains Mono', monospace; }
 .bold  { font-weight: 600; }
 .blue  { color: #2563eb; }
-.muted { color: #94a3b8; }
+.muted { color: #64748b; }
 
 /* Chips */
 .screen-chip {
@@ -635,7 +744,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
   border-radius: 4px;
   background: #f1f5f9;
   color: #475569;
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -645,7 +754,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
   border-radius: 4px;
   background: #ede9fe;
   color: #7c3aed;
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -656,7 +765,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
   gap: 3px;
   padding: 2px 6px;
   border-radius: 4px;
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -682,7 +791,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
 }
 .req-id {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   color: #475569;
   background: #e2e8f0;
@@ -690,7 +799,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
   border-radius: 4px;
 }
 .req-title {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: #0f172a;
   flex: 1;
@@ -726,13 +835,13 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
   border-radius: 6px;
   background: #e2e8f0;
   color: #0f172a;
-  font-size: 11px; font-weight: 800;
+  font-size: 12px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
 .heuristic-chip {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 600;
   color: #475569;
   background: #e2e8f0;
@@ -759,7 +868,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
 .spec-col:last-child, .req-col:last-child { border-right: none; }
 
 .col-label {
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -769,7 +878,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
 .col-label.teal-label { color: #0d9488; }
 .col-label.red-label  { color: #dc2626; }
 .col-text {
-  font-size: 10.5px;
+  font-size: 12px;
   color: #334155;
   line-height: 1.55;
   margin: 0;
@@ -777,7 +886,7 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
 .token-list, .criteria-list {
   margin: 0;
   padding-left: 14px;
-  font-size: 10px;
+  font-size: 12px;
   color: #475569;
   line-height: 1.7;
 }
@@ -785,8 +894,8 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
 .export-footer {
   text-align: center;
   padding: 16px;
-  color: #94a3b8;
-  font-size: 10px;
+  color: #64748b;
+  font-size: 12px;
   border-top: 1px solid #e2e8f0;
 }
 
@@ -797,10 +906,10 @@ html.light-mode [class*="bg-indigo-500"].text-white { color: #ffffff !important;
 .theme-logo:hover {
   opacity: 1;
 }
-html.light-mode .theme-logo {
+[data-theme="light"] .theme-logo {
   filter: brightness(0);
 }
-html.light-mode .nav-dark .theme-logo {
+[data-theme="light"] .nav-dark .theme-logo {
   filter: none;
 }
 
@@ -835,11 +944,12 @@ html.light-mode .nav-dark .theme-logo {
   .export-root { max-width: 100%; padding: 0; }
 }
 
-.m3-elevation-1 { background-image: linear-gradient(var(--m3-elevation-1), var(--m3-elevation-1)); }
-.m3-elevation-2 { background-image: linear-gradient(var(--m3-elevation-2), var(--m3-elevation-2)); }
-.m3-elevation-3 { background-image: linear-gradient(var(--m3-elevation-3), var(--m3-elevation-3)); }
-.m3-elevation-4 { background-image: linear-gradient(var(--m3-elevation-4), var(--m3-elevation-4)); }
-.m3-elevation-5 { background-image: linear-gradient(var(--m3-elevation-5), var(--m3-elevation-5)); }
+/* @ds-component: custom — M3 tonal elevation overlays; no DS-foundation equivalent */
+.m3-elevation-1 { background-image: linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0.05)); }
+.m3-elevation-2 { background-image: linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08)); }
+.m3-elevation-3 { background-image: linear-gradient(rgba(255,255,255,0.11), rgba(255,255,255,0.11)); }
+.m3-elevation-4 { background-image: linear-gradient(rgba(255,255,255,0.12), rgba(255,255,255,0.12)); }
+.m3-elevation-5 { background-image: linear-gradient(rgba(255,255,255,0.14), rgba(255,255,255,0.14)); }
 
 @keyframes skeleton-shimmer {
   0% { background-position: -200% 0; }

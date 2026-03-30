@@ -8,20 +8,20 @@ export function BacklogTable() {
   if (!backlog) return null;
 
   return (
-    <section className="py-12 border-t border-surface-border">
+    <section className="py-12 border-t border-[var(--ds-color-border-default)]">
       <div className="container mx-auto px-6 max-w-6xl">
         <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <h2 className="text-xl font-medium text-white mb-2 flex items-center gap-3">
-            <span className="w-8 h-8 rounded-[var(--m3-shape-full)] bg-teal-500/15 border border-teal-500/25 text-teal-400 text-sm font-bold flex items-center justify-center">B</span>
+            <span className="w-8 h-8 rounded-full bg-teal-500/15 border border-teal-500/25 text-teal-400 text-sm font-bold flex items-center justify-center">B</span>
             Customer Backlog — Enhancement Requests
           </h2>
           <p className="text-slate-400 text-sm mb-8">7 items from the product backlog reported by Ripple Treasury customers. All categorised as Enhancement (UX) on the Transaction Status Workflow.</p>
 
-          <div className="bg-surface-card rounded-[var(--m3-shape-md)] border border-slate-800 overflow-hidden">
+          <div className="bg-[var(--ds-color-surface-default)] rounded-[var(--ds-radius-xl)] border border-slate-800 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-teal-500/20 bg-surface-section">
+                  <tr className="border-b border-teal-500/20 bg-[var(--ds-color-surface-page)]">
                     <th className="px-4 py-3 text-xs uppercase text-slate-400 font-bold">#</th>
                     <th className="px-4 py-3 text-xs uppercase text-slate-400 font-bold">Enhancement Request</th>
                     <th className="px-4 py-3 text-xs uppercase text-slate-400 font-bold w-20">Screen</th>

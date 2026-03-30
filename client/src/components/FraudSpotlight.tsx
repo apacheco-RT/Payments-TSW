@@ -94,16 +94,16 @@ export function FraudSpotlight() {
   const currentKybResult = selectedPn ? VERIF_DATA[selectedPn]?.kyb : undefined;
 
   return (
-    <section aria-label="Fraud spotlight" className="rounded-[var(--m3-shape-md)] overflow-hidden border border-rose-500/20 mb-4">
+    <section aria-label="Fraud spotlight" className="rounded-[var(--ds-radius-xl)] overflow-hidden border border-rose-500/20 mb-4">
 
       <button
         onClick={() => setOpen(o => !o)}
         aria-expanded={open && !allCleared}
         aria-controls={!allCleared ? "fraud-spotlight-content" : undefined}
-        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white/20 ${allCleared ? "bg-emerald-500/10" : "fraud-gradient-header"}`}
+        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-200 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-white/20 ${allCleared ? "bg-emerald-500/10" : "fraud-gradient-header"}`}
         style={allCleared ? undefined : { background: `linear-gradient(to right, ${fraudSpotlight.gradientFrom}, ${fraudSpotlight.gradientVia}, ${fraudSpotlight.gradientTo})` }}
       >
-        <div className={`w-8 h-8 rounded-[var(--m3-shape-sm)] flex items-center justify-center shrink-0 ${allCleared ? "bg-emerald-500/15" : "bg-white/15 backdrop-blur-sm"}`}>
+        <div className={`w-8 h-8 rounded-[var(--ds-radius-lg)] flex items-center justify-center shrink-0 ${allCleared ? "bg-emerald-500/15" : "bg-white/15 backdrop-blur-xs"}`}>
           {allCleared
             ? <ShieldCheck className="w-4 h-4 text-emerald-400" aria-hidden="true" />
             : <ShieldAlert className="w-4 h-4 text-white" aria-hidden="true" />}
@@ -114,7 +114,7 @@ export function FraudSpotlight() {
           ) : (
             <>
               <span className="text-sm font-medium text-white">Fraud Protection Spotlight</span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-[var(--m3-shape-full)] bg-white/20 text-white text-xs font-bold backdrop-blur-sm">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-xs">
                 {flagged.length} flagged
               </span>
               {critCount > 0 && <span className="text-xs text-white">{critCount} critical</span>}
@@ -139,7 +139,7 @@ export function FraudSpotlight() {
             exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
             className="overflow-hidden"
           >
-            <div className="border-t border-white/10 grid lg:grid-cols-2 bg-surface-card">
+            <div className="border-t border-white/10 grid lg:grid-cols-2 bg-[var(--ds-color-surface-default)]">
               <div role="listbox" aria-label="Flagged transactions"
                 aria-activedescendant={selectedId ? `fraud-option-${selectedId}` : undefined}
                 className="divide-y divide-surface-border max-h-[360px] overflow-y-auto">
@@ -154,7 +154,7 @@ export function FraudSpotlight() {
                 ))}
               </div>
 
-              <div className="border-l border-surface-border bg-surface-card">
+              <div className="border-l border-[var(--ds-color-border-default)] bg-[var(--ds-color-surface-default)]">
                 {selectedTxn ? (
                   <FlaggedItemDetail
                     txn={selectedTxn}

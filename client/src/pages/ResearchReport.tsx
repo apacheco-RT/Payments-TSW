@@ -16,7 +16,7 @@ export default function ResearchReport() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-surface-page">
+    <div className="min-h-screen bg-[var(--ds-color-surface-page)]">
       <UnifiedNav />
       <main id="main-content">
         {loaded ? (
@@ -31,7 +31,7 @@ export default function ResearchReport() {
           <ResearchHeaderSkeleton />
         )}
       </main>
-      <footer className="py-6 border-t border-slate-800 bg-surface-deep text-center">
+      <footer className="py-6 border-t border-slate-800 bg-[var(--ds-color-surface-page)] /* @ds-component: custom — surface.deep has no DS equivalent */ text-center">
         <p className="text-slate-400 text-xs">PAYM — UX Research Report · Ripple Treasury Product Design · Feb 2026</p>
       </footer>
     </div>
