@@ -1,5 +1,7 @@
 /* DS-Foundation token imports — source of truth for all design tokens */
-@import "@ds-foundation/tokens/css";
+/* Note: only the tailwind preset is imported (hex values). The raw CSS files
+   use color(oklch ...) syntax which has limited browser support. Dark-mode
+   semantic overrides are applied via the [data-theme="dark"] block below. */
 @import "@ds-foundation/tokens/tailwind";
 
 /* Space Grotesk = closest available substitute for TT Ripple (Ripple's custom typeface).
@@ -279,6 +281,106 @@ layer(base);
 
     --sidebar-primary-foreground: hsl(0 0% 100%);
   }
+
+/* DS-Foundation semantic token overrides for dark mode.
+   Primitive vars (--ds-color-neutral-*, --ds-color-blue-*, etc.) are already
+   defined in :root by the tailwind preset (hex). These semantic vars point to
+   those primitives, so they resolve correctly without color(oklch) support. */
+[data-theme="dark"] {
+  --ds-color-brand-primary: var(--ds-color-blue-400);
+  --ds-color-brand-primary-hover: var(--ds-color-blue-300);
+  --ds-color-brand-primary-active: var(--ds-color-blue-200);
+  --ds-color-brand-primary-subtle: var(--ds-color-blue-950);
+  --ds-color-brand-primary-on: var(--ds-color-neutral-900);
+  --ds-color-brand-secondary: var(--ds-color-violet-400);
+  --ds-color-brand-secondary-hover: var(--ds-color-violet-300);
+  --ds-color-brand-secondary-subtle: var(--ds-color-violet-950);
+  --ds-color-brand-secondary-on: var(--ds-color-neutral-900);
+  --ds-color-surface-page: var(--ds-color-neutral-950);
+  --ds-color-surface-default: var(--ds-color-neutral-900);
+  --ds-color-surface-raised: var(--ds-color-neutral-800);
+  --ds-color-surface-overlay: var(--ds-color-neutral-800);
+  --ds-color-surface-sunken: var(--ds-color-neutral-950);
+  --ds-color-surface-disabled: var(--ds-color-neutral-800);
+  --ds-color-text-primary: var(--ds-color-neutral-50);
+  --ds-color-text-secondary: var(--ds-color-neutral-400);
+  --ds-color-text-tertiary: var(--ds-color-neutral-600);
+  --ds-color-text-disabled: var(--ds-color-neutral-700);
+  --ds-color-text-inverse: var(--ds-color-neutral-900);
+  --ds-color-text-on-brand: var(--ds-color-neutral-900);
+  --ds-color-text-link: var(--ds-color-blue-400);
+  --ds-color-text-link-hover: var(--ds-color-blue-300);
+  --ds-color-border-default: var(--ds-color-neutral-700);
+  --ds-color-border-strong: var(--ds-color-neutral-500);
+  --ds-color-border-focus: var(--ds-color-blue-400);
+  --ds-color-border-error: var(--ds-color-red-400);
+  --ds-color-border-disabled: var(--ds-color-neutral-700);
+  --ds-color-feedback-success-text: var(--ds-color-green-400);
+  --ds-color-feedback-success-bg: var(--ds-color-green-950);
+  --ds-color-feedback-success-border: var(--ds-color-green-700);
+  --ds-color-feedback-success-icon: var(--ds-color-green-400);
+  --ds-color-feedback-error-text: var(--ds-color-red-400);
+  --ds-color-feedback-error-bg: var(--ds-color-red-950);
+  --ds-color-feedback-error-border: var(--ds-color-red-700);
+  --ds-color-feedback-error-icon: var(--ds-color-red-400);
+  --ds-color-feedback-warning-text: var(--ds-color-amber-400);
+  --ds-color-feedback-warning-bg: var(--ds-color-amber-950);
+  --ds-color-feedback-warning-border: var(--ds-color-amber-700);
+  --ds-color-feedback-warning-icon: var(--ds-color-amber-400);
+  --ds-color-feedback-info-text: var(--ds-color-blue-400);
+  --ds-color-feedback-info-bg: var(--ds-color-blue-950);
+  --ds-color-feedback-info-border: var(--ds-color-blue-700);
+  --ds-color-feedback-info-icon: var(--ds-color-blue-400);
+  --ds-color-interactive-default: var(--ds-color-neutral-50);
+  --ds-color-interactive-hover: var(--ds-color-neutral-200);
+  --ds-color-interactive-active: var(--ds-color-neutral-100);
+  --ds-color-interactive-focus: var(--ds-color-blue-400);
+  --ds-color-interactive-disabled: var(--ds-color-neutral-700);
+  --ds-color-interactive-selected: var(--ds-color-blue-400);
+  --ds-color-interactive-selected-bg: var(--ds-color-blue-950);
+}
+
+/* Shadcn semantic token overrides for dark mode */
+[data-theme="dark"] {
+  --background: 222 84% 5%;
+  --foreground: 210 40% 98%;
+
+  --card: 222 84% 8%;
+  --card-foreground: 210 40% 98%;
+  --card-border: 217 33% 14%;
+
+  --popover: 222 84% 8%;
+  --popover-foreground: 210 40% 98%;
+  --popover-border: 217 33% 14%;
+
+  --primary: 203.8863 88.2845% 53.1373%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 217 33% 14%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217 33% 12%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 217 33% 14%;
+  --accent-foreground: 203.8863 88.2845% 53.1373%;
+
+  --destructive: 356 90% 54%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 217 33% 14%;
+  --input: 217 33% 14%;
+  --ring: 203.8863 88.2845% 53.1373%;
+
+  --sidebar: 222 84% 6%;
+  --sidebar-foreground: hsl(210 40% 98%);
+  --sidebar-border: hsl(217 33% 14%);
+  --sidebar-primary: hsl(203.8863 88.2845% 53.1373%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(217 33% 14%);
+  --sidebar-accent-foreground: hsl(203.8863 88.2845% 53.1373%);
+  --sidebar-ring: hsl(203.8863 88.2845% 53.1373%);
+}
 
 @layer base {
   body {
