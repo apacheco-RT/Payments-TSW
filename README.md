@@ -1,6 +1,6 @@
 # RT-Payments — Transaction Status Workflow (TSW)
 
-Interactive React prototype demonstrating a redesigned payment lifecycle interface for Ripple Treasury, built with Material Design 3 patterns, Ripple brand colors, and Space Grotesk typography.
+Interactive React prototype demonstrating a redesigned payment lifecycle interface for Ripple Treasury, built on `@ds-foundation/tokens`, Tailwind CSS v4, and Space Grotesk typography.
 
 ## Pages
 
@@ -15,19 +15,44 @@ Interactive React prototype demonstrating a redesigned payment lifecycle interfa
 
 ## Tech Stack
 
-- **Frontend**: React 18, Vite 7, Tailwind CSS 3, Framer Motion, Wouter, TanStack Query
+- **Frontend**: React 18, Vite 7, Tailwind CSS v4, Framer Motion, Wouter, TanStack Query
 - **Backend**: Express 5, Node.js, PostgreSQL 16 via Drizzle ORM
 - **Validation**: Zod shared schemas
-- **Design System**: Material Design 3 tokens, Space Grotesk font, Ripple Treasury brand palette
+- **Design System**: `@ds-foundation/tokens` v0.2.2 — CSS vars + Tailwind `@theme` preset
 
-## Getting Started
+## Local Setup
+
+### 1. GitHub Packages Authentication
+
+This project consumes `@ds-foundation/tokens` from GitHub Packages.
+
+Create a `.npmrc` in the project root (gitignored — never commit it):
+
+```
+@ds-foundation:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+Set the token in your shell before running `npm install`:
+
+```bash
+export NODE_AUTH_TOKEN=ghp_your_token_here   # PAT with read:packages scope
+```
+
+Create one at: https://github.com/settings/tokens?scopes=read:packages
+
+### 2. Install and Run
 
 ```bash
 npm install
-npm run dev
+npm run dev       # http://localhost:5000
+npm run check     # TypeScript check
+npm run build     # Production build
 ```
 
-The development server starts on port 5000.
+### CI
+
+Add `NODE_AUTH_TOKEN` as a GitHub Actions secret. The `.npmrc` template uses `${NODE_AUTH_TOKEN}` and will pick it up automatically.
 
 ## Feature Flags
 
@@ -43,6 +68,10 @@ All prototype feature toggles default to OFF. Enable via URL params (`=1`):
 
 Example: `/prototype?rlusdStrip=1&fraudSpotlight=1`
 
+## Theming
+
+Light/dark toggle sets `data-theme="light"` or `data-theme="dark"` on `<html>`. DS-foundation semantic tokens swap automatically. Default is dark.
+
 ## Project Structure
 
 ```
@@ -56,18 +85,26 @@ client/src/
     specs/        Annotated Specs sub-components
     results-table/ Transaction table components
     ui/           shadcn/ui primitives
-  hooks/          Custom React hooks
-  lib/            Utilities, design tokens, types, mock data
+  hooks/          use-theme.ts, use-toast.ts
+  lib/            design-tokens.ts (DS-foundation wrapper), utils, types, mock data
   data/           Shared report data
 server/           Express backend
 shared/           Shared TypeScript schemas
+docs/superpowers/ Design specs, implementation plans, migration notes
 ```
 
-## Build
+## Design System Uplift
 
-```bash
-npm run build
-```
+Branch `feat/ds-token-uplift` (PR #1) — Phase 1 complete:
+- Tailwind CSS v3 → v4 upgrade
+- `@ds-foundation/tokens@0.2.2` installed and wired
+- All hardcoded hex values and `--m3-*`/`--surface-*` vars removed from components
+- `design-tokens.ts` rewritten as thin DS-foundation re-export wrapper
+- `next-themes` replaced with `data-theme` attribute toggle
+- Token mapping: `docs/superpowers/migration-notes/token-mapping.md`
+
+**Phase 2 (pending PR #1 merge):** Atomic folder reorganization — `feat/ds-atomic-reorg`
+Plan: `docs/superpowers/plans/2026-03-30-phase2-ds-atomic-reorg.md`
 
 ## Database
 
@@ -77,31 +114,6 @@ Single table: `feedback` (id, name, email, message, isRead)
 npm run db:push
 ```
 
-## Local Setup
-
-### GitHub Packages Authentication
-
-This project consumes packages from GitHub Packages under the `@ds-foundation` scope.
-
-1. Create a GitHub Personal Access Token with `read:packages` scope at:
-   https://github.com/settings/tokens
-
-2. Create `.npmrc` in the project root (this file is gitignored — never commit it):
-   ```
-   @ds-foundation:registry=https://npm.pkg.github.com
-   //npm.pkg.github.com/:_authToken=YOUR_TOKEN_HERE
-   ```
-
-3. Or export the token as an env variable and create the file from the template:
-   ```bash
-   export NODE_AUTH_TOKEN=ghp_your_token_here
-   cp .npmrc.example .npmrc   # if .npmrc.example exists, otherwise create manually
-   ```
-
-### CI
-
-Add `NODE_AUTH_TOKEN` as a GitHub Actions secret. The `.npmrc` template uses `${NODE_AUTH_TOKEN}` and will pick it up automatically.
-
 ## License
 
-Proprietary - Ripple Treasury
+Proprietary — Ripple Treasury
