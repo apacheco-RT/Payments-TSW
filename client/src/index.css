@@ -1,7 +1,18 @@
-/* DS-Foundation token imports — source of truth for all design tokens */
-/* Note: only the tailwind preset is imported (hex values). The raw CSS files
-   use color(oklch ...) syntax which has limited browser support. Dark-mode
-   semantic overrides are applied via the [data-theme="dark"] block below. */
+/* DS-Foundation token imports — source of truth for all design tokens
+ *
+ * Why only /tailwind and not /css or /css/dark?
+ * The raw CSS files (@ds-foundation/tokens/css and /css/dark) use
+ * `color(oklch ...)` syntax (CSS Color Level 4 color() function) which has
+ * limited browser support — the browser in this project resolves those vars
+ * to rgba(0,0,0,0), breaking all surface and text colors.
+ *
+ * The /tailwind preset emits all primitive tokens as hex values into :root,
+ * which works everywhere. It also supplies the light-mode semantic mappings
+ * via its @theme {} block, so no separate /css import is needed for light.
+ *
+ * Dark-mode semantic overrides are applied manually via the
+ * [data-theme="dark"] block below, using the hex primitives already in :root.
+ */
 @import "@ds-foundation/tokens/tailwind";
 
 /* Space Grotesk = closest available substitute for TT Ripple (Ripple's custom typeface).
@@ -88,9 +99,8 @@ layer(base);
   --color-status-busy: rgb(239 68 68);
   --color-status-offline: rgb(156 163 175);
 
-  --font-sans: var(--font-sans);
-  --font-serif: var(--font-serif);
-  --font-mono: var(--font-mono);
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", Menlo, Monaco, "Courier New", monospace;
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
@@ -148,7 +158,7 @@ layer(base);
 }
 
 @utility nav-link {
-  @apply text-sm font-medium text-slate-400 hover:text-white transition-colors duration-200 cursor-pointer;
+  @apply text-sm font-medium text-[var(--ds-color-text-secondary)] hover:text-white transition-colors duration-200 cursor-pointer;
 
   &.active {
     @apply text-blue-400;
@@ -304,7 +314,7 @@ layer(base);
   --ds-color-surface-disabled: var(--ds-color-neutral-800);
   --ds-color-text-primary: var(--ds-color-neutral-50);
   --ds-color-text-secondary: var(--ds-color-neutral-400);
-  --ds-color-text-tertiary: var(--ds-color-neutral-600);
+  --ds-color-text-tertiary: var(--ds-color-neutral-500);
   --ds-color-text-disabled: var(--ds-color-neutral-700);
   --ds-color-text-inverse: var(--ds-color-neutral-900);
   --ds-color-text-on-brand: var(--ds-color-neutral-900);
@@ -338,10 +348,8 @@ layer(base);
   --ds-color-interactive-disabled: var(--ds-color-neutral-700);
   --ds-color-interactive-selected: var(--ds-color-blue-400);
   --ds-color-interactive-selected-bg: var(--ds-color-blue-950);
-}
 
-/* Shadcn semantic token overrides for dark mode */
-[data-theme="dark"] {
+  /* ── Shadcn semantic tokens ────────────────────────────────────────────── */
   --background: 222 84% 5%;
   --foreground: 210 40% 98%;
 
@@ -380,7 +388,7 @@ layer(base);
   --sidebar-accent: hsl(217 33% 14%);
   --sidebar-accent-foreground: hsl(203.8863 88.2845% 53.1373%);
   --sidebar-ring: hsl(203.8863 88.2845% 53.1373%);
-}
+} /* end [data-theme="dark"] */
 
 @layer base {
   body {
@@ -413,7 +421,7 @@ layer(base);
 }
 
 @layer utilities {
-  .m3-select {
+  .ds-select {
     appearance: none;
     -webkit-appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 5 3 3 3-3'/%3E%3C/svg%3E");
@@ -422,22 +430,22 @@ layer(base);
     padding-right: 28px;
   }
 
-  .m3-date::-webkit-calendar-picker-indicator {
+  .ds-date-input::-webkit-calendar-picker-indicator {
     opacity: 0;
     width: 20px;
     height: 20px;
     cursor: pointer;
   }
 
-  .m3-date::-webkit-datetime-edit {
+  .ds-date-input::-webkit-datetime-edit {
     padding-right: 0;
   }
 
-  .m3-date::-webkit-date-and-time-value {
+  .ds-date-input::-webkit-date-and-time-value {
     text-align: left;
   }
 
-  .m3-date::-moz-focus-inner {
+  .ds-date-input::-moz-focus-inner {
     border: 0;
   }
 
@@ -452,7 +460,12 @@ layer(base);
   }
 }
 
-/* ══ Light Mode Overrides ═══════════════════════════════════════════════ */
+/* ══ Light Mode Overrides ═══════════════════════════════════════════════
+ * Phase 1 specificity debt: these rules use !important to override the
+ * DS-foundation defaults that land in :root from the /tailwind preset.
+ * Phase 2 will resolve this by aligning component-level token usage so
+ * light-mode values flow from the semantic layer without overrides.
+ * ═════════════════════════════════════════════════════════════════════ */
 
 [data-theme="light"] body {
   background-image:
@@ -475,15 +488,8 @@ layer(base);
   border-bottom-color: #cbd5e1 !important;
 }
 
-/* ── Slate utility backgrounds ─── */
-[data-theme="light"] [class*="bg-slate-900"] { background-color: #f1f5f9 !important; }
-[data-theme="light"] [class*="bg-slate-800"] { background-color: #e2e8f0 !important; }
-[data-theme="light"] [class*="bg-slate-700"] { background-color: #f1f5f9 !important; }
-
 /* ── Borders ─── */
 [data-theme="light"] .border-l-teal-400 { border-color: #0f766e !important; }
-[data-theme="light"] [class*="border-slate-800"] { border-color: #cbd5e1 !important; }
-[data-theme="light"] [class*="border-slate-700"] { border-color: #e2e8f0 !important; }
 
 /* ── White text — flip to dark for content on light surfaces ─── */
 [data-theme="light"] .text-white { color: #0f172a !important; }
@@ -504,11 +510,17 @@ layer(base);
 [data-theme="light"] .fraud-gradient-header .text-white { color: #ffffff !important; }
 
 /* ── Top nav: stays dark in both light and dark modes ────────────────────── */
-[data-theme="light"] .nav-dark .text-slate-300              { color: #cbd5e1 !important; }
-[data-theme="light"] .nav-dark .text-slate-400,
-[data-theme="light"] .nav-dark .text-slate-500              { color: #94a3b8 !important; }
-[data-theme="light"] .nav-dark .text-teal-400               { color: #2dd4bf !important; }
-[data-theme="light"] .nav-dark .hover\:text-slate-200:hover { color: #e2e8f0 !important; }
+/* Override DS semantic vars within .nav-dark so all DS-token-driven text/bg
+   stays on the dark scale regardless of page theme */
+[data-theme="light"] .nav-dark {
+  --ds-color-text-primary:    #f1f5f9;
+  --ds-color-text-secondary:  #94a3b8;
+  --ds-color-text-tertiary:   #64748b;
+  --ds-color-surface-page:    #0f172a;
+  --ds-color-surface-default: #1e293b;
+  --ds-color-surface-sunken:  #0a1628;
+  --ds-color-border-default:  #334155;
+}
 /* White SVG wordmark: stays white on the dark nav in both modes — no invert */
 [data-theme="light"] .nav-dark .nav-logo                    { filter: none !important; }
 /* Fallback: white logo on a light nav (nav-dark not present) gets inverted */
@@ -552,12 +564,13 @@ layer(base);
   color-scheme: light;
 }
 
-/* ── Slate text — single authoritative set (was duplicated causing conflicts) ─── */
-[data-theme="light"] .text-slate-200 { color: #1e293b !important; }  /* slate-800 */
-[data-theme="light"] .text-slate-300 { color: #374151 !important; }  /* gray-700  */
-[data-theme="light"] .text-slate-400 { color: #4b5563 !important; }  /* gray-600  */
-[data-theme="light"] .text-slate-500 { color: #6b7280 !important; }  /* gray-500  */
-[data-theme="light"] .text-slate-600 { color: #6b7280 !important; }  /* gray-500  ≈ 5.3:1 */
+/* Phase 1: slate text classes removed from components — these rules are kept
+   as a safety net in case any slate-* class reaches render via dynamic strings */
+[data-theme="light"] .text-slate-200 { color: #1e293b !important; }
+[data-theme="light"] .text-slate-300 { color: #374151 !important; }
+[data-theme="light"] .text-slate-400 { color: #4b5563 !important; }
+[data-theme="light"] .text-slate-500 { color: #6b7280 !important; }
+[data-theme="light"] .text-slate-600 { color: #6b7280 !important; }
 [data-theme="light"] .hover\:text-white:hover { color: #0f172a !important; }
 
 /* ── Coloured text — darken to ≥ 4.5:1 contrast on light backgrounds ─── */
@@ -944,12 +957,10 @@ layer(base);
   .export-root { max-width: 100%; padding: 0; }
 }
 
-/* @ds-component: custom — M3 tonal elevation overlays; no DS-foundation equivalent */
-.m3-elevation-1 { background-image: linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0.05)); }
-.m3-elevation-2 { background-image: linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08)); }
-.m3-elevation-3 { background-image: linear-gradient(rgba(255,255,255,0.11), rgba(255,255,255,0.11)); }
-.m3-elevation-4 { background-image: linear-gradient(rgba(255,255,255,0.12), rgba(255,255,255,0.12)); }
-.m3-elevation-5 { background-image: linear-gradient(rgba(255,255,255,0.14), rgba(255,255,255,0.14)); }
+/* DS-foundation elevation utilities — using shadow tokens instead of M3 tonal overlays */
+.ds-elevation-1 { box-shadow: var(--ds-shadow-sm); }
+.ds-elevation-2 { box-shadow: var(--ds-shadow-md); }
+.ds-elevation-3 { box-shadow: var(--ds-shadow-lg); }
 
 @keyframes skeleton-shimmer {
   0% { background-position: -200% 0; }
