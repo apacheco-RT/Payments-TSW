@@ -9,6 +9,7 @@ import { IconButton } from "@/components/shared/IconButton";
 import { DetailCard } from "@/components/shared/DetailCard";
 import type { Txn, TxnAttachment, FeatureFlags } from "@/lib/types";
 import { fmtAmt } from "@/lib/mock-data";
+import { MonoAmount, CurrencyBadge } from "@ds-foundation/react";
 
 interface TransactionRowProps {
   txn: Txn;
@@ -69,8 +70,10 @@ function TransactionRowInner({
         )}
         {cols.trnDate && <td className={`${td} text-xs text-[var(--ds-color-text-secondary)]`}>{t.trnDate}</td>}
         {cols.amount && (
-          <td className={`${td} text-sm font-medium text-[var(--ds-color-text-primary)] whitespace-nowrap text-right`}>
-            {fmtAmt(t.amount, t.cur)} <span className="text-xs text-[var(--ds-color-text-secondary)] font-normal">{t.cur}</span>
+          <td className={`${td} whitespace-nowrap text-right`}>
+            <MonoAmount value={t.amount} currency={t.cur as 'USD' | 'EUR' | 'GBP'} />{' '}
+            {/* DS CurrencyBadge accepts string; t.cur is always ISO 4217 */}
+            <CurrencyBadge currency={t.cur as 'USD' | 'EUR' | 'GBP'} />
           </td>
         )}
         {cols.payee && <td className={`${td} text-sm font-medium text-[var(--ds-color-text-primary)] whitespace-nowrap`}>{t.payee}</td>}

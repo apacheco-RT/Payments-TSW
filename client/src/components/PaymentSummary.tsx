@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, LayoutGrid, LayoutList, X } from "lucide-react";
 import type { Filters, SummaryRowId } from "@/lib/types";
 import { SUMMARY_ROWS } from "@/lib/mock-data";
+import { MonoAmount } from "@ds-foundation/react";
 
 export function PaymentSummary({ filters, setFilters }: { filters: Filters; setFilters: (f: Filters) => void }) {
   const [open, setOpen] = useState(true);
@@ -16,8 +17,6 @@ export function PaymentSummary({ filters, setFilters }: { filters: Filters; setF
       return next;
     });
   };
-
-  const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   useEffect(() => {
     if (!filters.status) {
@@ -154,9 +153,9 @@ export function PaymentSummary({ filters, setFilters }: { filters: Filters; setF
                               </span>
                             </div>
                           </td>
-                          <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-secondary)]">{fmt(row.debits)}</td>
-                          <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-secondary)]">{fmt(row.credits)}</td>
-                          <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-primary)]">{fmt(row.amount)}</td>
+                          <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-secondary)]"><MonoAmount value={row.debits} currency="USD" /></td>
+                          <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-secondary)]"><MonoAmount value={row.credits} currency="USD" /></td>
+                          <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-primary)]"><MonoAmount value={row.amount} currency="USD" /></td>
                           <td className="px-4 py-3 text-center">
                             <span className={`text-xs transition-all rounded-[var(--ds-radius-lg)] px-2 py-1 ${isActive
                               ? "text-[var(--ds-color-brand-primary)] font-medium"
@@ -174,9 +173,9 @@ export function PaymentSummary({ filters, setFilters }: { filters: Filters; setF
                       <td className="px-4 py-3 font-medium text-white">
                         <div className="pl-11">Total</div>
                       </td>
-                      <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-primary)]">USD ${fmt(totalDebits)}</td>
-                      <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-primary)]">USD ${fmt(totalCredits)}</td>
-                      <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-primary)]">USD ${fmt(totalAmount)}</td>
+                      <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-primary)]"><MonoAmount value={totalDebits} currency="USD" /></td>
+                      <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-primary)]"><MonoAmount value={totalCredits} currency="USD" /></td>
+                      <td className="px-4 py-3 text-right font-medium tabular-nums text-sm text-[var(--ds-color-text-primary)]"><MonoAmount value={totalAmount} currency="USD" /></td>
                       <td />
                     </tr>
                   </tfoot>
@@ -227,7 +226,7 @@ export function PaymentSummary({ filters, setFilters }: { filters: Filters; setF
                               <span className="text-base font-medium tabular-nums text-white">{row.count.toLocaleString()}</span>
                               <span className="text-xs text-[var(--ds-color-text-secondary)]">transactions</span>
                             </span>
-                            <span className="text-xs text-[var(--ds-color-text-secondary)] tabular-nums truncate min-w-0">USD {fmt(row.amount)}</span>
+                            <span className="text-xs text-[var(--ds-color-text-secondary)] tabular-nums truncate min-w-0"><MonoAmount value={row.amount} currency="USD" size="sm" /></span>
                           </div>
                         </div>
                         <div id={`card-details-${row.id}`}>
@@ -247,14 +246,14 @@ export function PaymentSummary({ filters, setFilters }: { filters: Filters; setF
                                       <span className="w-3.5 h-3.5 rounded-full bg-[var(--ds-color-feedback-error-bg)] flex items-center justify-center text-[var(--ds-color-feedback-error-text)] text-xs font-bold leading-none shrink-0">−</span>
                                       Debits
                                     </span>
-                                    <span className="text-xs tabular-nums text-[var(--ds-color-text-secondary)]">USD {fmt(row.debits)}</span>
+                                    <span className="text-xs tabular-nums text-[var(--ds-color-text-secondary)]"><MonoAmount value={row.debits} currency="USD" size="sm" /></span>
                                   </div>
                                   <div className="flex items-center justify-between">
                                     <span className="flex items-center gap-1.5 text-xs text-[var(--ds-color-text-secondary)]">
                                       <span className="w-3.5 h-3.5 rounded-full bg-[var(--ds-color-feedback-success-bg)] flex items-center justify-center text-[var(--ds-color-feedback-success-text)] text-xs font-bold leading-none shrink-0">+</span>
                                       Credits
                                     </span>
-                                    <span className="text-xs tabular-nums text-[var(--ds-color-text-secondary)]">USD {fmt(row.credits)}</span>
+                                    <span className="text-xs tabular-nums text-[var(--ds-color-text-secondary)]"><MonoAmount value={row.credits} currency="USD" size="sm" /></span>
                                   </div>
                                 </div>
                               </motion.div>
@@ -284,15 +283,15 @@ export function PaymentSummary({ filters, setFilters }: { filters: Filters; setF
                 <div className="grid grid-cols-3 gap-4 mt-3 rounded-[var(--ds-radius-xl)] border border-[var(--ds-color-border-default)]/60 bg-[var(--ds-color-surface-page)] px-5 py-3">
                   <div>
                     <div className="text-xs text-[var(--ds-color-text-secondary)] font-medium mb-0.5">Total debits</div>
-                    <div className="text-sm font-medium tabular-nums text-[var(--ds-color-text-primary)]">USD ${fmt(totalDebits)}</div>
+                    <div className="text-sm font-medium tabular-nums text-[var(--ds-color-text-primary)]"><MonoAmount value={totalDebits} currency="USD" /></div>
                   </div>
                   <div>
                     <div className="text-xs text-[var(--ds-color-text-secondary)] font-medium mb-0.5">Total credits</div>
-                    <div className="text-sm font-medium tabular-nums text-[var(--ds-color-text-primary)]">USD ${fmt(totalCredits)}</div>
+                    <div className="text-sm font-medium tabular-nums text-[var(--ds-color-text-primary)]"><MonoAmount value={totalCredits} currency="USD" /></div>
                   </div>
                   <div className="text-right">
                     <div className="text-xs text-[var(--ds-color-text-secondary)] font-medium mb-0.5">Total amount</div>
-                    <div className="text-sm font-medium tabular-nums text-white">USD ${fmt(totalAmount)}</div>
+                    <div className="text-sm font-medium tabular-nums text-white"><MonoAmount value={totalAmount} currency="USD" /></div>
                   </div>
                 </div>
               </div>
