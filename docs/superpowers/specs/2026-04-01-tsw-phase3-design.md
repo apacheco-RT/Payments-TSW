@@ -2,7 +2,7 @@
 
 ## Goal
 
-Contribute three components from TSW to `ds-foundation-rt`, cut a new `@ds-foundation/react` patch release, and update TSW to consume them from the package instead of local files.
+Contribute three components from TSW to `ds-foundation`, cut a new `@ds-foundation/react` patch release, and update TSW to consume them from the package instead of local files.
 
 ## Scope
 
@@ -31,7 +31,7 @@ Contribute three components from TSW to `ds-foundation-rt`, cut a new `@ds-found
 ### Two-repo structure
 
 ```
-ds-foundation-rt/
+ds-foundation/
 └── packages/
     ├── react/src/
     │   ├── DetailCard.tsx        ← new (+ DetailCard.stories.tsx co-located)
@@ -69,7 +69,7 @@ npx changeset           # Add patch changelog entry
 
 ### Contribution model
 
-Each DS PR follows the pattern in `NEW_COMPONENTS.md`:
+Each DS PR follows the contribution pattern below (note: `NEW_COMPONENTS.md` in the TSW repo is stale — the commands and storybook path there are out of date; use the steps below as authoritative):
 1. Add `ComponentName.tsx` + `ComponentName.stories.tsx` to `packages/react/src/`
 2. Add MDX registry spec to `packages/registry/components/`
 3. Add barrel export to `packages/react/src/index.ts`
@@ -100,14 +100,16 @@ export interface DetailCardProps {
 - `<h4>` title: uppercase, `--ds-font-weight-medium`, `--ds-color-brand-primary` colour, `--ds-font-tracking-wide` letter spacing, `--ds-font-size-xs`, bottom border in `--ds-color-border-default` (50% opacity)
 - Children rendered in the card body below the title
 
-**Styling:** Inline `style` objects only — no Tailwind, no `className` prop.
+**Styling:** Inline `style` objects only — no Tailwind, no `className` prop. Add `// @ds-component` annotation comment at the top of the file (per DS Foundation convention).
+
+**Tokens:** Use `--ds-` prefixed tokens exclusively (e.g. `var(--ds-radius-lg)`, `var(--ds-font-size-xs)`). Some older components in the repo use un-prefixed aliases (`var(--radius-full)`) — these are bugs; the canonical names from `packages/tokens/build/css/variables.css` all have the `--ds-` prefix.
 
 **Accessibility:**
 - `<h4>` provides semantic heading structure; no ARIA roles required
 
 **TSW migration:**
 1. Delete `atoms/DetailCard.tsx`
-2. Update all 8 import sites (`TransactionCard.tsx` × 4, `TransactionRow.tsx` × 4):
+2. Update 2 import files (8 JSX usages total: 4 in `TransactionCard.tsx`, 4 in `TransactionRow.tsx`):
    ```
    @/components/atoms/DetailCard → @ds-foundation/react
    ```
@@ -161,10 +163,15 @@ export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
 - Focus ring: `2px solid` focus-ring token from variant, `2px offset`
 - Disabled: `opacity: 0.3`, `cursor: not-allowed`
 - Inline styles for colours/layout; accepts `className` from spread for any Tailwind consumer overrides
+- Add `// @ds-component` annotation comment at the top of the file
+
+> **Token prefix note:** Use `--ds-` prefixed tokens only. Existing components using `var(--radius-full)` etc. are using an incorrect alias — new contributions must use canonical names like `var(--ds-radius-lg)`.
+
+> **`forwardRef` precedent:** `IconButton` is the first DS Foundation component to use `React.forwardRef`. This is necessary because TSW call sites use `ref` (ColumnPicker). Reviewers should be aware this establishes a new pattern.
 
 **TSW migration:**
 1. Delete `atoms/IconButton.tsx`
-2. Update imports across 5 files: `TransactionRow.tsx`, `TransactionCard.tsx`, `TableToolbar.tsx`, `TablePagination.tsx`, `ColumnPicker.tsx`:
+2. Update imports across 4 files: `TransactionRow.tsx`, `TableToolbar.tsx`, `TablePagination.tsx`, `ColumnPicker.tsx` (`TransactionCard.tsx` does not import `IconButton`):
    ```
    @/components/atoms/IconButton → @ds-foundation/react
    ```
@@ -235,7 +242,13 @@ export interface StateBadgeProps {
 
 **TSW usage (Badge.tsx after migration):**
 
-Replace `StatusBadgeContent` with `<StateBadge>`. The `overdue` boolean stays in TSW's `Badge.tsx` wrapper — if `overdue`, bypass `StateBadge` entirely and render the existing overdue markup (clock icon + error styling). `StateBadge` is only used for non-overdue states.
+Replace `StatusBadgeContent` entirely with `<StateBadge>`. Two intentional behavioural changes:
+
+1. **`Failed` unification**: The current `Badge.tsx` has a special case where `!overdue && status === "Failed"` renders a DS `StatusPill` component. Post-migration this special case is removed — `Failed` uses `StateBadge` with `intent="error"` like all other statuses. This is a deliberate simplification.
+
+2. **`Pending` / `On Hold` colour shift**: These statuses currently fall to the neutral default in `StatusBadgeContent`. Post-migration `getTxStatusIntent()` maps them to `warning`. Minor visual improvement — intentional.
+
+The `overdue` boolean stays in TSW's `Badge.tsx` wrapper — if `overdue`, bypass `StateBadge` entirely and render the existing overdue markup (clock icon + error styling). `StateBadge` is only used for non-overdue states.
 
 ```tsx
 import { StateBadge } from '@ds-foundation/react';
@@ -314,7 +327,7 @@ After all three DS PRs are merged and a new `@ds-foundation/react` version is pu
 - Delete `client/src/components/atoms/DetailCard.tsx`
 - Delete `client/src/components/atoms/IconButton.tsx`
 - Update all 8 DetailCard import paths (`TransactionCard.tsx` × 4, `TransactionRow.tsx` × 4)
-- Update all 5 IconButton import paths (`TransactionRow.tsx`, `TransactionCard.tsx`, `TableToolbar.tsx`, `TablePagination.tsx`, `ColumnPicker.tsx`)
+- Update all 4 IconButton import paths (`TransactionRow.tsx`, `TableToolbar.tsx`, `TablePagination.tsx`, `ColumnPicker.tsx`)
 - Create `client/src/lib/iconButtonVariants.ts`
 - Update `client/src/components/atoms/Badge.tsx` — replace `StatusBadgeContent` with `<StateBadge>` (keep overdue path)
 - Add `getTxStatusIntent()` to `client/src/lib/design-tokens.ts`
