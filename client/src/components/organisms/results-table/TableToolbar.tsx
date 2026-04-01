@@ -84,9 +84,13 @@ function TableToolbarInner({
             className="h-10 bg-[var(--ds-color-surface-page)] border border-[var(--ds-color-border-default)]/60 text-[var(--ds-color-text-primary)] text-xs rounded-[var(--ds-radius-lg)] pl-8 pr-3 w-44 focus:outline-hidden focus:ring-2 focus:ring-[var(--ds-color-brand-primary)] placeholder:text-[var(--ds-color-text-secondary)] transition-all"
           />
         </div>
-        <button className="flex items-center gap-1.5 px-4 h-10 rounded-full text-xs text-[var(--ds-color-text-secondary)] hover:text-white border border-[var(--ds-color-border-default)]/60 hover:border-[var(--ds-color-border-default)] bg-[var(--ds-color-surface-page)] transition-all focus:outline-hidden focus:ring-2 focus:ring-[var(--ds-color-brand-primary)]">
-          <Download className="w-3.5 h-3.5" aria-hidden="true" /> Export
-        </button>
+        <IconButton
+          icon={<Download className="w-3.5 h-3.5" aria-hidden="true" />}
+          aria-label="Export transactions"
+          variant="neutral"
+        >
+          Export
+        </IconButton>
         <ColumnPicker
           showColPicker={showColPicker}
           setShowColPicker={setShowColPicker}

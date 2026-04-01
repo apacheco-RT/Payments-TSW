@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useLocation } from "wouter";
 import { Settings2, X, ArrowRight } from "lucide-react";
+import { IconButton } from "@ds-foundation/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { prototypeFeatures } from "@/lib/types";
 
@@ -86,13 +87,12 @@ export function ConfigurePrototypeModal({
                   <p className="text-xs text-[var(--ds-color-text-secondary)] m-0">Toggle features before launching</p>
                 </div>
               </div>
-              <button
+              <IconButton
                 onClick={closeModal}
+                icon={<X className="w-5 h-5" aria-hidden="true" />}
                 aria-label="Close configure modal"
-                className="p-2 rounded-[var(--ds-radius-lg)] text-[var(--ds-color-text-secondary)] hover:text-white hover:bg-white/5 transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--ds-color-brand-primary)]"
-              >
-                <X className="w-5 h-5" />
-              </button>
+                variant="neutral"
+              />
             </div>
 
             <div className="px-6 py-5 space-y-3">

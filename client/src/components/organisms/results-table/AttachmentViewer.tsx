@@ -3,6 +3,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Paperclip, X } from "lucide-react";
 import type { TxnAttachment } from "@/lib/types";
+import { IconButton } from "@ds-foundation/react";
 
 interface AttachmentViewerProps {
   attachment: TxnAttachment | null;
@@ -24,10 +25,12 @@ function AttachmentViewerInner({ attachment, onClose }: AttachmentViewerProps) {
                 <Paperclip className="w-4 h-4 text-[var(--ds-color-text-secondary)]" aria-hidden="true" />
                 <span className="text-sm font-medium text-white">{attachment.name}</span>
               </div>
-              <button onClick={onClose} aria-label="Close attachment viewer"
-                className="p-1.5 rounded-[var(--ds-radius-lg)] text-[var(--ds-color-text-secondary)] hover:text-white hover:bg-[var(--ds-color-surface-raised)]/50 transition-colors focus:outline-hidden focus:ring-2 focus:ring-[var(--ds-color-brand-primary)]">
-                <X className="w-4 h-4" aria-hidden="true" />
-              </button>
+              <IconButton
+                onClick={onClose}
+                icon={<X className="w-4 h-4" aria-hidden="true" />}
+                aria-label="Close attachment viewer"
+                variant="neutral"
+              />
             </div>
             <div className="flex-1 overflow-auto p-4">
               {attachment.type === "pdf" ? (

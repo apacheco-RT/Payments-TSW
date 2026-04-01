@@ -5,7 +5,7 @@ import {
   ArrowRight, CheckCircle2, Clock, FileText, HelpCircle, Landmark, X,
 } from "lucide-react";
 import type { Txn } from "@/lib/types";
-import { MonoAmount } from "@ds-foundation/react";
+import { MonoAmount, IconButton } from "@ds-foundation/react";
 
 interface PaymentRailDialogProps {
   txn: Txn | null;
@@ -48,10 +48,12 @@ function PaymentRailDialogInner({ txn, dialogRef, onClose, showStablecoin = true
                   <h2 id="rail-dialog-title" className="text-xl font-medium text-white m-0">Select payment rail</h2>
                   <p className="text-[var(--ds-color-text-secondary)] text-sm mt-1">Choose how to process this payment. Compare options to find the best solution.</p>
                 </div>
-                <button onClick={onClose} aria-label="Close dialog"
-                  className="p-1.5 rounded-[var(--ds-radius-lg)] text-[var(--ds-color-text-secondary)] hover:text-white hover:bg-white/8 transition-colors shrink-0 focus:outline-hidden focus:ring-2 focus:ring-[var(--ds-color-brand-primary)]">
-                  <X className="w-5 h-5" aria-hidden="true" />
-                </button>
+                <IconButton
+                  onClick={onClose}
+                  icon={<X className="w-5 h-5" aria-hidden="true" />}
+                  aria-label="Close dialog"
+                  variant="neutral"
+                />
               </div>
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-4 text-sm">
                 <div className="flex items-center gap-2">

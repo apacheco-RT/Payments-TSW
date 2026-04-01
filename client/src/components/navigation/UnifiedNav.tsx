@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Sun, Moon, Settings2, X, ArrowRight, ChevronDown, Menu, Download, Loader2 } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { AnimatePresence, motion } from "framer-motion";
+import { IconButton } from "@ds-foundation/react";
 
 const prototypeFeatures = [
   { key: "rlusdStrip", label: "RLUSD Eligible Strip", description: "Highlight transactions eligible for instant RLUSD settlement" },
@@ -244,13 +245,12 @@ export function UnifiedNav() {
                     <p className="text-xs text-[var(--ds-color-text-secondary)] m-0">Toggle features before launching</p>
                   </div>
                 </div>
-                <button
+                <IconButton
                   onClick={closeModal}
+                  icon={<X className="w-5 h-5" aria-hidden="true" />}
                   aria-label="Close configure modal"
-                  className="p-2 rounded-[var(--ds-radius-lg)] text-[var(--ds-color-text-secondary)] hover:text-white hover:bg-white/5 transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--ds-color-brand-primary)]"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                  variant="neutral"
+                />
               </div>
 
               <div className="p-6 space-y-3">
