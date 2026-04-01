@@ -3,7 +3,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckSquare, ChevronRight, Square } from "lucide-react";
 import { FraudBadge } from "@/components/molecules/FraudBadge";
-import { DetailCard } from "@/components/atoms/DetailCard";
+import { DetailCard } from "@ds-foundation/react";
 import type { Txn, TxnAttachment, FeatureFlags } from "@/lib/types";
 import { fmtAmt } from "@/lib/mock-data";
 import { Paperclip } from "lucide-react";

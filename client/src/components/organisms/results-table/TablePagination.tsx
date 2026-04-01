@@ -1,7 +1,7 @@
 // @tsw-organism — TSW-specific feature section, stays local
 import React from "react";
 import type { Filters } from "@/lib/types";
-import { IconButton } from "@/components/atoms/IconButton";
+import { IconButton } from "@ds-foundation/react";
 import { cn } from "@/lib/utils";
 
 interface TablePaginationProps {

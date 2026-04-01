@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Columns3 } from "lucide-react";
 import { ALL_COLS } from "@/lib/mock-data";
-import { IconButton } from "@/components/atoms/IconButton";
+import { IconButton } from "@ds-foundation/react";
 import { cn } from "@/lib/utils";
 
 type ColsState = { risk: boolean; trnNum: boolean; trnDate: boolean; amount: boolean; payee: boolean; operativeAcct: boolean; instType: boolean; valDate: boolean; offsetNum: boolean };

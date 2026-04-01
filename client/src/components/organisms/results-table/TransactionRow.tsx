@@ -6,8 +6,8 @@ import {
   Paperclip, RefreshCw, Square, XCircle, CircleCheckBig,
 } from "lucide-react";
 import { FraudBadge } from "@/components/molecules/FraudBadge";
-import { IconButton } from "@/components/atoms/IconButton";
-import { DetailCard } from "@/components/atoms/DetailCard";
+import { IconButton, DetailCard } from "@ds-foundation/react";
+import { toIconButtonVariant } from "@/lib/iconButtonVariants";
 import type { Txn, TxnAttachment, FeatureFlags } from "@/lib/types";
 import { fmtAmt } from "@/lib/mock-data";
 import { MonoAmount, CurrencyBadge } from "@ds-foundation/react";
@@ -97,15 +97,15 @@ function TransactionRowInner({
         {cols.offsetNum && <td className={`${td} font-mono text-xs text-[var(--ds-color-text-secondary)]`}>{t.offsetNumber}</td>}
         <td className={`${td} whitespace-nowrap`} onClick={e => e.stopPropagation()}>
           <div className="flex items-center gap-1">
-            <IconButton variant="view" onClick={() => {}} aria-label={`View details for ${t.id}`} title="View"
+            <IconButton variant={toIconButtonVariant('view')} onClick={() => {}} aria-label={`View details for ${t.id}`} title="View"
               icon={<Eye className="w-3.5 h-3.5" aria-hidden="true" />} />
-            <IconButton variant="confirm" onClick={() => {}} aria-label={`Confirm ${t.id}`} title="Confirm"
+            <IconButton variant={toIconButtonVariant('confirm')} onClick={() => {}} aria-label={`Confirm ${t.id}`} title="Confirm"
               icon={<CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />} />
-            <IconButton variant="complete" onClick={() => {}} aria-label={`Complete ${t.id}`} title="Complete"
+            <IconButton variant={toIconButtonVariant('complete')} onClick={() => {}} aria-label={`Complete ${t.id}`} title="Complete"
               icon={<CircleCheckBig className="w-3.5 h-3.5" aria-hidden="true" />} />
-            <IconButton variant="reextract" onClick={() => {}} aria-label={`Re-extract ${t.id}`} title="Re-extract"
+            <IconButton variant={toIconButtonVariant('reextract')} onClick={() => {}} aria-label={`Re-extract ${t.id}`} title="Re-extract"
               icon={<RefreshCw className="w-3.5 h-3.5" aria-hidden="true" />} />
-            <IconButton variant="fail" onClick={() => {}} aria-label={`Fail ${t.id}`} title="Fail"
+            <IconButton variant={toIconButtonVariant('fail')} onClick={() => {}} aria-label={`Fail ${t.id}`} title="Fail"
               icon={<XCircle className="w-3.5 h-3.5" aria-hidden="true" />} />
           </div>
         </td>

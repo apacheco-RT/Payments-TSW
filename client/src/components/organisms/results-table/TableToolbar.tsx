@@ -4,7 +4,7 @@ import {
   CheckCircle2, ChevronUp, Download, PauseCircle, RefreshCw, Search, Trash2, X,
 } from "lucide-react";
 import { ColumnPicker } from "./ColumnPicker";
-import { IconButton } from "@/components/atoms/IconButton";
+import { IconButton } from "@ds-foundation/react";
 import { cn } from "@/lib/utils";
 
 type ColsState = { risk: boolean; trnNum: boolean; trnDate: boolean; amount: boolean; payee: boolean; operativeAcct: boolean; instType: boolean; valDate: boolean; offsetNum: boolean };

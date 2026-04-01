@@ -190,3 +190,27 @@ export const a11y = {
   contrastLarge:      3.0, // ratio — 1.4.3 large text (≥18pt/14pt bold)
   focusNotObscured:   true,// 2.4.11 Focus Not Obscured (Minimum) — new in WCAG 2.2
 } as const;
+
+import type { StateBadgeIntent } from '@ds-foundation/react';
+
+export function getTxStatusIntent(status: string): StateBadgeIntent {
+  switch (status) {
+    case 'Pending':
+    case 'On Hold':
+    case 'Under Review':
+    case 'Needs Approval':    return 'warning';
+    case 'Processing':
+    case 'Ready to Approve':
+    case 'Escalated':
+    case 'Ready to Extract':
+    case 'Extracted':
+    case 'Confirmed':
+    case 'Draft':             return 'info';
+    case 'Approved':          return 'success';
+    case 'Rejected':
+    case 'Failed':            return 'error';
+    case 'Cancelled':
+    case 'Void':
+    default:                  return 'neutral';
+  }
+}
