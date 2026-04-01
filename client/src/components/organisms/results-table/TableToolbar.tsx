@@ -59,6 +59,7 @@ function TableToolbarInner({
               </button>
             )}
             <IconButton onClick={() => setSelected([])} aria-label="Clear selection"
+              variant="neutral"
               icon={<X className="w-3.5 h-3.5" aria-hidden="true" />}>
               <span className="text-xs">Clear</span>
             </IconButton>
