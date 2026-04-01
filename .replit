@@ -25,7 +25,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run dev"
+args = "npm install --legacy-peer-deps && npm run dev"
 waitForPort = 5000
 
 [workflows.workflow.metadata]
