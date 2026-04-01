@@ -28,6 +28,77 @@ layer(base);
 @custom-variant dark (&[data-theme="dark"], [data-theme="dark"] &);
 
 @theme {
+  /* ── DS Foundation token wiring ──────────────────────────────────────────
+     These wire Tailwind v4 utility classes to DS Foundation token vars.
+     Component files need no changes — utilities auto-resolve to DS values.
+     ──────────────────────────────────────────────────────────────────────── */
+
+  /* Typography — font size */
+  --font-size-2xs: var(--ds-font-size-2xs);
+  --font-size-xs:  var(--ds-font-size-xs);
+  --font-size-sm:  var(--ds-font-size-sm);
+  --font-size-base: var(--ds-font-size-md);  /* overrides Tailwind built-in text-base */
+  --font-size-md:   var(--ds-font-size-md);  /* DS alias → text-md utility */
+  --font-size-lg:  var(--ds-font-size-lg);
+  --font-size-xl:  var(--ds-font-size-xl);
+  --font-size-2xl: var(--ds-font-size-2xl);
+  --font-size-3xl: var(--ds-font-size-3xl);
+  --font-size-4xl: var(--ds-font-size-4xl);
+  --font-size-5xl: var(--ds-font-size-5xl);
+  --font-size-6xl: var(--ds-font-size-6xl);
+
+  /* Typography — font weight */
+  --font-weight-thin:       var(--ds-font-weight-thin);
+  --font-weight-light:      var(--ds-font-weight-light);
+  --font-weight-normal:     var(--ds-font-weight-regular);   /* overrides Tailwind built-in font-normal */
+  --font-weight-regular:    var(--ds-font-weight-regular);   /* DS alias → font-regular utility */
+  --font-weight-medium:     var(--ds-font-weight-medium);
+  --font-weight-semibold:   var(--ds-font-weight-semibold);
+  --font-weight-bold:       var(--ds-font-weight-bold);
+  --font-weight-extrabold:  var(--ds-font-weight-extrabold);
+
+  /* Typography — line height */
+  --leading-none:    var(--ds-font-leading-none);
+  --leading-tight:   var(--ds-font-leading-tight);
+  --leading-snug:    var(--ds-font-leading-snug);
+  --leading-normal:  var(--ds-font-leading-normal);
+  --leading-relaxed: var(--ds-font-leading-relaxed);
+  --leading-loose:   var(--ds-font-leading-loose);
+
+  /* Typography — letter spacing */
+  --tracking-tighter: var(--ds-font-tracking-tighter);
+  --tracking-tight:   var(--ds-font-tracking-tight);
+  --tracking-normal:  var(--ds-font-tracking-normal);
+  --tracking-wide:    var(--ds-font-tracking-wide);
+  --tracking-wider:   var(--ds-font-tracking-wider);
+  --tracking-widest:  var(--ds-font-tracking-widest);
+
+  /* Spacing — base unit; all gap-*, p-*, m-* utilities multiply from this */
+  --spacing: var(--ds-spacing-1); /* 0.25rem — matches Tailwind default */
+
+  /* Motion — duration (wired via var; easing cannot use var inside cubic-bezier()) */
+  --duration-fastest: var(--ds-motion-duration-fastest); /* 50ms  */
+  --duration-faster:  var(--ds-motion-duration-faster);  /* 100ms */
+  --duration-fast:    var(--ds-motion-duration-fast);    /* 150ms */
+  --duration-normal:  var(--ds-motion-duration-normal);  /* 200ms */
+  --duration-slow:    var(--ds-motion-duration-slow);    /* 300ms */
+  --duration-slower:  var(--ds-motion-duration-slower);  /* 400ms */
+
+  /* Motion — easing (DS values baked in as cubic-bezier strings; update manually if DS changes) */
+  --ease-linear:  cubic-bezier(0, 0, 1, 1);           /* --ds-motion-easing-linear     */
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);         /* --ds-motion-easing-ease-in    */
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);         /* --ds-motion-easing-ease-out   */
+  --ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);       /* --ds-motion-easing-ease-in-out */
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);  /* --ds-motion-easing-spring     */
+
+  /* Shadows */
+  --shadow-xs:  var(--ds-shadow-xs);
+  --shadow-sm:  var(--ds-shadow-sm);
+  --shadow-md:  var(--ds-shadow-md);
+  --shadow-lg:  var(--ds-shadow-lg);
+  --shadow-xl:  var(--ds-shadow-xl);
+  --shadow-2xl: var(--ds-shadow-2xl);
+
   --color-risk-critical: #ef4444;
   --color-risk-high: #f97316;
   --color-risk-medium: #f59e0b;
