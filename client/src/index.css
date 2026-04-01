@@ -99,18 +99,6 @@ layer(base);
   --shadow-xl:  var(--ds-shadow-xl);
   --shadow-2xl: var(--ds-shadow-2xl);
 
-  --color-risk-critical: #ef4444;
-  --color-risk-high: #f97316;
-  --color-risk-medium: #f59e0b;
-  --color-risk-low: #22c55e;
-  --color-risk-none: #94a3b8;
-
-  --color-stage-create: #6366f1;
-  --color-stage-antifraud: #f97316;
-  --color-stage-approvals: #8b5cf6;
-  --color-stage-status: #0ea5e9;
-  --color-stage-history: #64748b;
-
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-border: hsl(var(--border));
@@ -247,26 +235,6 @@ layer(base);
 }
 
 :root {
-
-    /* ── Severity / Status ───────────────────────────────────────────────── */
-    --status-high: 343 88% 60%; /* Rose   #f43f5e */
-    --status-med: 38 92% 50%; /* Amber  #f59e0b */
-    --status-low: 158 64% 52%; /* Emerald #10b981 */
-
-    /* ── TSW Risk Levels ─────────────────────────────────────────────────── */
-    --risk-critical-bg: #fef2f2;
-    --risk-critical-text: #dc2626;
-    --risk-high-bg: #fff7ed;
-    --risk-high-text: #c2410c;
-    --risk-medium-bg: #fffbeb;
-    --risk-medium-text: #b45309;
-    --risk-low-bg: #f0fdf4;
-    --risk-low-text: #166534;
-    --risk-none-bg: #f8fafc;
-    --risk-none-text: #475569;
-
-    /* ── Fraud Spotlight ─────────────────────────────────────────────────── */
-    --spotlight-gradient: linear-gradient(135deg, #f43f5e, #fb923c);
 
     /* Base mapping for Shadcn/Tailwind */
     --background: 0 0% 100%;
@@ -644,33 +612,6 @@ layer(base);
 [data-theme="light"] .text-slate-600 { color: #6b7280 !important; }
 [data-theme="light"] .hover\:text-white:hover { color: #0f172a !important; }
 
-/* ── Coloured text — darken to ≥ 4.5:1 contrast on light backgrounds ─── */
-/* Teal: teal-400/300 (#2dd4bf / #5eead4) ≈ 1.5:1 on white → darken to teal-700 (#0f766e) ≈ 5.5:1 */
-[data-theme="light"] .text-teal-300,
-[data-theme="light"] .text-teal-400 { color: #0f766e !important; }
-
-/* Rose: rose-400/300 ≈ 3.7:1 / 2.5:1 on white → darken to rose-600 (#e11d48) ≈ 6:1 */
-[data-theme="light"] .text-rose-300,
-[data-theme="light"] .text-rose-400 { color: #e11d48 !important; }
-
-/* Amber: amber-400/300 ≈ 1.8:1 / 1.5:1 on white → darken to amber-700 (#b45309) ≈ 6:1 */
-[data-theme="light"] .text-amber-300,
-[data-theme="light"] .text-amber-400 { color: #b45309 !important; }
-
-/* Emerald: emerald-400/300 ≈ 2.5:1 / 1.7:1 on white → darken to emerald-700 (#047857) ≈ 5:1 */
-[data-theme="light"] .text-emerald-300,
-[data-theme="light"] .text-emerald-400 { color: #047857 !important; }
-
-/* Orange: orange-400 ≈ 2.0:1 on white → darken to orange-700 (#c2410c) ≈ 5:1 */
-[data-theme="light"] .text-orange-400 { color: #c2410c !important; }
-
-/* Blue: already readable but boost to accessible dark variants */
-[data-theme="light"] .text-blue-300,
-[data-theme="light"] .text-blue-400   { color: #1d4ed8 !important; }  /* blue-700   ≈ 5:1 */
-
-/* Red: red-400 (#f87171) = 3.2:1 on white → darken to red-600 (#dc2626) ≈ 5.1:1 */
-[data-theme="light"] .text-red-400 { color: #dc2626 !important; }
-
 
 /* ── bg-white opacity variants invisible on light surfaces ─────────────── */
 /* bg-white/15 and bg-white/20 are used for icon/badge overlays in the
@@ -682,16 +623,6 @@ layer(base);
 [data-theme="light"] [class*="border-white\/10"] { border-color: #e2e8f0 !important; }
 [data-theme="light"] [class*="border-white\/25"] { border-color: #cbd5e1 !important; }
 
-/* ── Solid-colour badges with text-white — restore white text ─────────── */
-/* e.g. RLUSD badge: <span class="bg-teal-500 text-white">,
-   status chip fill backgrounds from orange/rose/amber/blue/emerald etc.  */
-[data-theme="light"] [class*="bg-teal-500"].text-white,
-[data-theme="light"] [class*="bg-rose-500"].text-white,
-[data-theme="light"] [class*="bg-amber-500"].text-white,
-[data-theme="light"] [class*="bg-blue-500"].text-white,
-[data-theme="light"] [class*="bg-emerald-500"].text-white,
-[data-theme="light"] [class*="bg-orange-500"].text-white,
-[data-theme="light"] [class*="bg-indigo-500"].text-white { color: #ffffff !important; }
 
 /* ══ Export / Print Page Styles ═════════════════════════════════════════ */
 
