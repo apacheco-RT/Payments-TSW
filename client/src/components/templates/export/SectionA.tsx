@@ -13,7 +13,7 @@ export function SectionA() {
         <span className="section-badge">A</span>
         <div>
           <h2 className="section-title">Heuristic Evaluation — H1 to H10</h2>
-          <p className="section-sub">Nielsen's 10 usability heuristics applied to the Transaction Status Workflow. Severity rated by frequency × impact.</p>
+          <p className="section-sub">Nielsen's 10 usability heuristics applied to the Transaction Center. Severity rated by frequency × impact.</p>
         </div>
       </div>
       <table className="data-table">

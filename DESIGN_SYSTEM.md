@@ -1,9 +1,9 @@
-# Design System — Ripple Treasury (TSW)
+# Design System — Ripple Treasury
 
 **Last updated:** 2026-02-25
 **Status:** Living document — update as decisions are made
 
-This is the single source of truth for design direction, tokens, and components for the Transaction Status Workflow (TSW) redesign.
+This is the single source of truth for design direction, tokens, and components for the Transaction Center.
 
 ---
 
@@ -611,9 +611,9 @@ interface ReportsFilters {
 ┌────────────────────────────────────────────────────────────────────────────┐
 │  AppNav: GTreasury logo · CASH · PAYMENTS (active) · … · User · ⭐ ❓ 🔔  │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  SubHeader breadcrumb: Payments › Transaction Status Workflow              │
+│  SubHeader breadcrumb: Payments › Transaction Center                       │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  Page Header: "Transaction Status Workflow" · Last refreshed HH:MM [↻]    │
+│  Page Header: "Transaction Center" · Last refreshed HH:MM [↻]             │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  FilterPanel ── always-visible bar ─────────────────────────────────────── │
 │  [🔍 Search…] | [Trn. Date▼] [02/24]→[02/24] [Preset… ▼] |               │

@@ -69,7 +69,7 @@ const deliverables = [
     badge: "Interactive",
     badgeColor: "bg-[var(--ds-color-feedback-info-bg)] text-[var(--ds-color-feedback-info-text)] border-[var(--ds-color-feedback-info-border)]/25",
     title: "Interactive Prototype",
-    subtitle: "Redesigned Transaction Status Workflow in React",
+    subtitle: "Transaction Center",
     bullets: [
       "Filter screen — quick-selects, clear-all, presets",
       "Results screen — fraud badges, pipeline chips, triage",
@@ -106,7 +106,7 @@ export default function Landing() {
             className="max-w-3xl mx-auto text-center"
           >
             <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--ds-color-brand-primary-subtle)] border border-[var(--ds-color-brand-primary)]/20 text-[var(--ds-color-brand-primary)] text-xs font-bold uppercase tracking-widest mb-6">
-              PAYM · Transaction Status Workflow
+              PAYM · Transaction Center
             </motion.div>
 
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl font-medium tracking-tight mb-4 leading-tight">
@@ -235,7 +235,7 @@ export default function Landing() {
 
       <footer className="py-6 border-t border-[var(--ds-color-border-default)] bg-[var(--ds-color-surface-page)] /* @ds-component: custom — surface.deep has no DS equivalent */ text-center">
         <p className="text-[var(--ds-color-text-secondary)] text-xs">
-          PAYM — Transaction Status Workflow UX Audit &nbsp;·&nbsp; Ripple Treasury Product Design &nbsp;·&nbsp; Confidential
+          PAYM — Transaction Center &nbsp;·&nbsp; Ripple Treasury Product Design &nbsp;·&nbsp; Confidential
         </p>
       </footer>
 

@@ -1,7 +1,7 @@
-# Ripple Treasury — TSW Prototype
+# Ripple Treasury — Transaction Center
 
 ## Overview
-Interactive prototype for Ripple Treasury's Transaction Status Workflow (TSW) redesign. Includes heuristic evaluation, annotated specs, interactive prototype, and export report.
+Interactive prototype for Ripple Treasury's Transaction Center. Includes heuristic evaluation, annotated specs, interactive prototype, and export report.
 
 ## Tech Stack
 - **Frontend**: React 18, Vite 7, Tailwind CSS 3, shadcn/ui, Framer Motion, Wouter (routing), TanStack Query
@@ -55,7 +55,7 @@ The Configure Prototype modal (accessible from the nav bar "Prototype" link or H
 - `/` — Landing page (Hub)
 - `/research` — Research Report
 - `/specs` — Annotated Specs
-- `/prototype` — Interactive TSW Prototype
+- `/prototype` — Transaction Center
 - `/strategy` — Design Strategy (Home)
 - `/export` — Export Report (print-friendly)
 

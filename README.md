@@ -1,4 +1,4 @@
-# RT-Payments — Transaction Status Workflow (TSW)
+# RT-Payments — Transaction Center
 
 Interactive React prototype demonstrating a redesigned payment lifecycle interface for Ripple Treasury, built on `@ds-foundation/tokens`, Tailwind CSS v4, and Space Grotesk typography.
 

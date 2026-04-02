@@ -13,7 +13,7 @@ export function SectionB() {
         <span className="section-badge teal">B</span>
         <div>
           <h2 className="section-title">Customer Backlog — Enhancement Requests</h2>
-          <p className="section-sub">7 items from the product backlog reported by Ripple Treasury customers on the Transaction Status Workflow.</p>
+          <p className="section-sub">7 items from the product backlog reported by Ripple Treasury customers on the Transaction Center.</p>
         </div>
       </div>
       <table className="data-table">

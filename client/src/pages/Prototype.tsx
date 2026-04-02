@@ -126,9 +126,9 @@ export default function Prototype() {
             <nav aria-label="Breadcrumb" className="breadcrumb-bar flex items-center gap-1.5 text-xs mb-1.5">
               <span className="text-[var(--ds-color-text-secondary)] font-medium">Payments</span>
               <ChevronRight className="w-3 h-3 text-[var(--ds-color-text-secondary)]" aria-hidden="true" />
-              <span className="text-[var(--ds-color-text-secondary)]" aria-current="page">Transaction Status Workflow</span>
+              <span className="text-[var(--ds-color-text-secondary)]" aria-current="page">Transaction Center</span>
             </nav>
-            <h1 className="text-xl font-medium text-white m-0 leading-tight tracking-tight">Transaction Status Workflow</h1>
+            <h1 className="text-xl font-medium text-white m-0 leading-tight tracking-tight">Transaction Center</h1>
             <p className="text-xs text-[var(--ds-color-text-secondary)] mt-1 m-0">Manage and monitor all your payments in one place</p>
           </div>
           <div className="flex items-center gap-3">
@@ -163,7 +163,7 @@ export default function Prototype() {
       <footer className="shrink-0 py-2 px-4 border-t border-[var(--ds-color-border-default)]/60 bg-[var(--ds-color-surface-page)] flex items-center justify-between">
         <span className="text-xs text-[var(--ds-color-text-secondary)]">©2026 Ripple Treasury. All rights reserved · 26.1.0421 · Policies · QAVR</span>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-[var(--ds-color-text-secondary)]">TSW Redesign · Ripple Treasury Design System · Feb 2026</span>
+          <span className="text-xs text-[var(--ds-color-text-secondary)]">Transaction Center · Ripple Treasury Design System · Feb 2026</span>
           <button
             onClick={() => setIsDark(d => !d)}
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}

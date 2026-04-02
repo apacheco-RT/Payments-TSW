@@ -2,7 +2,7 @@ import type { StateBadgeIntent } from '@ds-foundation/react';
 
 // Thin re-export wrapper — maps TSW token API to @ds-foundation/tokens CSS vars.
 /**
- * Design Tokens — Ripple Treasury (TSW)
+ * Design Tokens — Ripple Treasury
  *
  * Canonical source of truth for all design decisions.
  * Values are now re-exported as @ds-foundation/tokens CSS variable references.

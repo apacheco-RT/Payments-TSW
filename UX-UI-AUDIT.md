@@ -1,4 +1,4 @@
-# UX/UI Audit Report — Ripple Treasury TSW Prototype
+# UX/UI Audit Report — Ripple Treasury Transaction Center
 
 **Date:** March 18, 2026
 **Scope:** WCAG 2.2 AA, Nielsen's Heuristics, Material Design 3 Principles

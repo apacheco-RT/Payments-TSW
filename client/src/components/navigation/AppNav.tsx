@@ -34,7 +34,7 @@ const paymentsMenuSections: MenuSection[] = [
       { icon: Table2,            label: "Single Transaction" },
       { icon: Table2,            label: "Multiple Transactions" },
       { icon: ArrowLeftRight,    label: "Internal Transfer" },
-      { icon: GitCompareArrows,  label: "Transaction Status Workflow", highlight: true, route: "/prototype" },
+      { icon: GitCompareArrows,  label: "Transaction Center", highlight: true, route: "/prototype" },
       { icon: CheckSquare,       label: "Payment Approvals" },
       { icon: ListOrdered,       label: "Transaction List" },
       { icon: FileCheck,         label: "Prenote NOC" },

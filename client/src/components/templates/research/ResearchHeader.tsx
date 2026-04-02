@@ -32,7 +32,7 @@ export function ResearchHeader() {
             UX Research Findings
           </motion.h1>
           <motion.p variants={fadeInUp} className="text-[var(--ds-color-text-secondary)] text-lg max-w-2xl mb-6">
-            Nielsen's 10 heuristics applied to the Transaction Status Workflow, synthesised with
+            Nielsen's 10 heuristics applied to the Transaction Center, synthesised with
             7 customer-reported enhancement requests.
           </motion.p>
           <motion.div variants={fadeInUp} className="bg-[var(--ds-color-surface-raised)]/40 border border-[var(--ds-color-border-default)] rounded-[var(--ds-radius-xl)] p-4 max-w-4xl">

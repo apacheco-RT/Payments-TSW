@@ -16,7 +16,7 @@ export function BacklogTable() {
             <span className="w-8 h-8 rounded-full bg-[var(--ds-color-brand-primary-subtle)] border border-[var(--ds-color-brand-primary)]/25 text-[var(--ds-color-brand-primary)] text-sm font-bold flex items-center justify-center">B</span>
             Customer Backlog — Enhancement Requests
           </h2>
-          <p className="text-[var(--ds-color-text-secondary)] text-sm mb-8">7 items from the product backlog reported by Ripple Treasury customers. All categorised as Enhancement (UX) on the Transaction Status Workflow.</p>
+          <p className="text-[var(--ds-color-text-secondary)] text-sm mb-8">7 items from the product backlog reported by Ripple Treasury customers. All categorised as Enhancement (UX) on the Transaction Center.</p>
 
           <div className="bg-[var(--ds-color-surface-default)] rounded-[var(--ds-radius-xl)] border border-[var(--ds-color-border-default)] overflow-hidden">
             <div className="overflow-x-auto">

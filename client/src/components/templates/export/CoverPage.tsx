@@ -4,7 +4,7 @@ export function CoverPage() {
     <div className="print-page cover-page">
       <div className="cover-inner">
         <p className="cover-tag">Ripple Treasury · Ripple Treasury Product Design</p>
-        <h1 className="cover-title">Transaction Status Workflow</h1>
+        <h1 className="cover-title">Transaction Center</h1>
         <p className="cover-subtitle">UX Audit & Design Requirements</p>
         <div className="cover-meta">
           <span>February 2026</span>
