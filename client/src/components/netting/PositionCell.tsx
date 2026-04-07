@@ -12,6 +12,7 @@ export function PositionCell({ pairing }: PositionCellProps) {
   const settledPct = pairing.grossExposure > 0
     ? Math.round((pairing.settled / pairing.grossExposure) * 100)
     : 0;
+  const freshnessAt = freshnessMinutesToDate(pairing.freshnessMinutes);
 
   return (
     <div className="px-5 py-4">
@@ -22,8 +23,8 @@ export function PositionCell({ pairing }: PositionCellProps) {
         <CurrencyBadge currency={pairing.currency} />
         <span className="ml-auto">
           <FreshnessChip
-            state={deriveFreshnessState(freshnessMinutesToDate(pairing.freshnessMinutes))}
-            timestamp={freshnessMinutesToDate(pairing.freshnessMinutes)}
+            state={deriveFreshnessState(freshnessAt)}
+            timestamp={freshnessAt}
           />
         </span>
       </div>
@@ -74,6 +75,7 @@ export function PositionCell({ pairing }: PositionCellProps) {
 
       {pairing.breakdown.length > 0 && (
         <button
+          type="button"
           onClick={() => setExpanded(!expanded)}
           className="mt-3 flex items-center gap-1 text-xs text-gray-400 hover:text-purple-600 transition-colors"
         >

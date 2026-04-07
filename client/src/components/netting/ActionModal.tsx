@@ -138,6 +138,7 @@ export function ActionModal({ pairing, open, onClose, onSubmit }: ActionModalPro
             <div className="flex gap-2 mb-2">
               {(["full", "partial"] as const).map((mode) => (
                 <button
+                  type="button"
                   key={mode}
                   onClick={() => setAmountMode(mode)}
                   className={`px-3 py-1 text-xs rounded-md border transition-colors ${

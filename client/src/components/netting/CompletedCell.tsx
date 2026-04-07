@@ -43,8 +43,10 @@ export function CompletedCell({ actions }: CompletedCellProps) {
           )}
 
           <button
-            onClick={() => console.log("Navigate to Payments module")}
-            className="mt-3 flex items-center gap-1 text-xs text-gray-400 hover:text-purple-600 transition-colors"
+            type="button"
+            disabled
+            title="Payments module link not yet wired"
+            className="mt-3 flex items-center gap-1 text-xs text-gray-300 cursor-not-allowed"
           >
             <ExternalLink className="w-3 h-3" />
             View in Payments

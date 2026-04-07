@@ -30,8 +30,12 @@ export default function IntercompanySettlement() {
     setActions((prev) => [...prev, newAction]);
   }
 
+  const visiblePairings = MOCK_PAIRINGS.filter((p) =>
+    p.breakdown.some((b) => selectedTypes.includes(b.type))
+  );
+
   return (
-    <TreasuryShell solution="Payments" activeFeature="Settlement Netting">
+    <TreasuryShell>
       <div className="flex flex-col h-full">
         <DashboardHeader
           startPoint={startPoint}
@@ -41,7 +45,7 @@ export default function IntercompanySettlement() {
         />
         <div className="flex-1 overflow-auto">
           <ColumnHeaders />
-          {MOCK_PAIRINGS.map((pairing) => (
+          {visiblePairings.map((pairing) => (
             <EntityRow
               key={pairing.id}
               pairing={pairing}

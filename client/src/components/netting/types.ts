@@ -10,7 +10,7 @@ export type TxType =
 
 export type ActionStatus =
   | "submitted" | "in_payments" | "first_approval" | "second_approval"
-  | "sent_to_bank" | "bank_confirmed" | "failed";
+  | "sent_to_bank" | "bank_confirmed" | "failed" | "rejected";
 
 export interface TxBreakdown {
   type: TxType;
