@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
+import { CurrencyBadge } from "@ds-foundation/react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
@@ -74,9 +75,8 @@ export function ActionModal({ pairing, open, onClose, onSubmit }: ActionModalPro
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-base">
             Initiate Settlement
-            <span className="px-1.5 py-0.5 text-xs font-medium rounded bg-purple-50 text-purple-700 border border-purple-100">
-              {pairing.from} ↔ {pairing.to}
-            </span>
+            <span className="text-sm text-gray-500 font-normal">{pairing.from} ↔ {pairing.to}</span>
+            <CurrencyBadge currency={pairing.currency} />
           </DialogTitle>
         </DialogHeader>
 
