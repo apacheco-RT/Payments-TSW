@@ -1,9 +1,9 @@
 # Design System — Ripple Treasury
 
-**Last updated:** 2026-02-25
+**Last updated:** 2026-03-05
 **Status:** Living document — update as decisions are made
 
-This is the single source of truth for design direction, tokens, and components for the Transaction Center.
+This is the single source of truth for design direction, tokens, and components across all Ripple Treasury prototype modules: TSW, GSmart Anti Fraud, and the Netting / Intercompany Settlement module.
 
 ---
 
@@ -16,6 +16,12 @@ This is the single source of truth for design direction, tokens, and components 
 5. [Page Layout](#5-page-layout)
 6. [WCAG 2.2 Requirements](#6-wcag-22-requirements)
 7. [Decisions Log](#7-decisions-log)
+
+> **Module coverage:**
+> - `/prototype` — Transaction Status Workflow (TSW redesign, dark theme)
+> - `/fraud-rules` — GSmart Fraud Protection Config (dark theme, orange accent)
+> - `/fraud-reports` — GSmart Audit Logs & Reporting (dark theme, orange accent)
+> - `/netting` — Intercompany Settlement Command Center (light theme, `TreasuryShell`, purple accent)
 
 ---
 
@@ -74,9 +80,39 @@ All design decisions are grounded in two sources:
 | **CSS custom properties** | `client/src/index.css` | Runtime variables — theming, light/dark overrides |
 | **Tailwind config** | `tailwind.config.ts` | Utility class generation — use `text-risk-critical`, `bg-stage-create`, `rounded-pill` etc. |
 
-### Ripple Brand (baseline)
+### Ripple Brand — nav_v2 Confirmed Tokens
 
-> Source: `brand.ripple.com` — replace with official registry when Ripple design system is supplied.
+> Source: extracted from `nav_v2_export.html` `:root` CSS block. These are the authoritative values for any screen using `TreasuryShell`.
+
+| CSS var | Value | Use |
+|---------|-------|-----|
+| `--ripple-blue-50` | `#006aff` | Primary action, active nav, links |
+| `--ripple-blue-70` | `#0045c6` | Hover state on blue elements |
+| `--ripple-blue-90` | `#001b66` | Header / solution tab bar background |
+| `--ripple-purple-50` | `#9c47ff` | **Netting module accent** — buttons, active tabs, CTA |
+| `--sidebar` | `#fafafa` | Left sidebar background |
+| `--sidebar-border` | `#e5e5e5` | Sidebar border |
+
+**Tailwind equivalents used in code:**
+| Role | Tailwind class | Hex |
+|------|----------------|-----|
+| Header / nav bg | `bg-[#001B66]` | `#001b66` |
+| Nav hover underline | `bg-[#4D9AFF]/60` | 60% opacity blue |
+| Sidebar bg | `bg-[#f8f9fa]` | matches `--sidebar` |
+| Sidebar border | `border-[#e5e5e5]` | matches `--sidebar-border` |
+| Content bg | `bg-[#f8fafc]` | page area (slightly off-white) |
+| Card bg | `bg-white` | panel cards |
+| Card border | `border-[#e2e8f0]` | standard card separator |
+| Netting purple | `text-[#9c47ff]` / `bg-[#9c47ff]` | matches `--ripple-purple-50` |
+| Netting purple hover | `bg-[#6417bf]` | darker purple for button hover |
+| Body text | `text-[#0f172a]` | slate-900 equivalent |
+| Secondary text | `text-[#475569]` | slate-600 |
+| Tertiary / meta | `text-[#64748b]` | slate-500 |
+| Disabled / label | `text-[#94a3b8]` | slate-400 |
+
+### Ripple Brand — TSW / AppNav Tokens (dark-theme pages)
+
+> Used by Prototype.tsx, FraudRulesConfig.tsx, FraudReports.tsx — pages that use `AppNav` on a dark background.
 
 | Token | Value | Use |
 |-------|-------|-----|
@@ -109,57 +145,21 @@ All design decisions are grounded in two sources:
 | Status | `#0ea5e9` (sky) | `#f0f9ff` | `text-stage-status` |
 | History | `#64748b` (slate) | `#f8fafc` | `text-stage-history` |
 
-### Surface Tokens
-
-All surfaces use CSS custom properties defined in `:root` (dark) and `html.light-mode` (light). Tailwind utilities are generated via the `surface.*` colour group in `tailwind.config.ts`.
-
-| Token | CSS variable | Dark mode | Light mode | Tailwind class |
-|-------|-------------|-----------|------------|----------------|
-| Page | `--surface-page` | `#0f1e35` | `#f1f5f9` | `bg-surface-page` |
-| Card | `--surface-card` | `#162a47` | `#ffffff` | `bg-surface-card` |
-| Elevated | `--surface-elevated` | `#2d4a77` | `#cbd5e1` | `bg-surface-elevated` |
-| Inset | `--surface-inset` | `#0a1628` | `#f8fafc` | `bg-surface-inset` |
-| Section | `--surface-section` | `#0d1c30` | `#f3f4f6` | `bg-surface-section` |
-| Deep | `--surface-deep` | `#050b14` | `#f1f5f9` | `bg-surface-deep` |
-| Row hover | `--surface-row-hover` | `#132640` | `#edf2f7` | `bg-surface-row-hover` |
-| Border | `--surface-border` | `#1a3455` | `#cbd5e1` | `border-surface-border` |
-
-Legacy `--navy-dark/mid/light` variables alias `--surface-page/card/elevated` respectively.
-
 ### Light Mode Implementation
 
 Light mode is activated by adding the `light-mode` class to the `<html>` element. The CSS overrides live in `client/src/index.css`.
 
 #### How overrides work
 
-Surface tokens are CSS custom properties that change values in `html.light-mode`:
+All surface overrides use substring attribute selectors to match Tailwind's hex background classes:
 
 ```css
-:root {
-  --surface-page: 218 56% 13%;   /* dark: #0f1e35 */
-  --surface-card: 218 48% 18%;   /* dark: #162a47 */
-}
-html.light-mode {
-  --surface-page: 210 40% 97%;   /* light: #f1f5f9 */
-  --surface-card: 0 0% 100%;     /* light: #ffffff */
-}
+html.light-mode [class*="bg-[#0f1e35]"] { background-color: #f1f5f9 !important; }
+html.light-mode [class*="bg-[#162a47]"] { background-color: #ffffff  !important; }
+html.light-mode [class*="bg-[#0d1c30]"] { background-color: #f3f4f6 !important; }
 ```
 
-Components use `bg-surface-page`, `bg-surface-card`, `border-surface-border` etc. The rendered colour automatically switches based on the current theme. No hex-substring selectors are needed.
-
-#### Nav-dark scoping
-
-The top nav bar stays dark in both themes. Apply the `nav-dark` class to any container that should remain dark. Inside `.nav-dark`, surface token values are overridden back to their dark-mode values:
-
-```css
-html.light-mode .nav-dark {
-  --surface-inset:  218 60% 10%;
-  --surface-card:   218 48% 18%;
-  --surface-border: 218 47% 22%;
-}
-```
-
-Any dropdown panels rendered inside or near the nav should also have the `nav-dark` class.
+The class attribute **stays unchanged** on the element; only the rendered background changes. This means any selector keyed on the class name (not the computed style) still fires in light mode.
 
 #### Known pitfalls — rules every dev must know
 
@@ -167,7 +167,7 @@ Any dropdown panels rendered inside or near the nav should also have the `nav-da
 |---------|-----------|------|
 | **`text-white/50` stays white in light mode** | Tailwind opacity variants generate separate CSS classes (`text-white\/50`) not matched by `.text-white` | Use `breadcrumb-bar` class on any nav whose children use `text-white/X` variants, OR replace opacity variants with explicit slate classes |
 | **`bg-white/5` is invisible on light bg** | 5% white overlay on a white surface = barely visible | All `bg-white/N` selected-state backgrounds need a light-mode CSS override: `rgba(0,0,0,0.04)` |
-| **`color-scheme: dark` persists in light mode** | The base rule `.bg-surface-page input { color-scheme: dark }` applies dark native form controls | The light mode override `html.light-mode .bg-surface-page input { color-scheme: light }` must immediately follow |
+| **`color-scheme: dark` persists in light mode** | The base rule `[class*="bg-[#0f1e35]"] input { color-scheme: dark }` keys on the class name, which stays even after the background is overridden | The light mode override `html.light-mode [class*="bg-[#0f1e35]"] input { color-scheme: light }` must immediately follow the base rule |
 | **Gradient container text stays white** | `.text-white` rule overrides too broadly | Elements with `text-white` inside gradient containers (`.fraud-gradient-header`, `.nav-dark`, gradient `from-*` buttons) have explicit restoration rules that must be maintained |
 
 #### Breadcrumb bar requirement
@@ -512,7 +512,7 @@ Operator-facing config screen. Controls which fraud detection rules fire, their 
 #### Key behaviours
 
 - **`isDirty` state** — set to `true` by any `updateRule()` call; reset to `false` on `handleSave()`. Drives the sticky unsaved-changes bar.
-- **Sticky save bar** — `sticky bottom-0 -mx-6 -mb-6` inside `overflow-y-auto` `<main>` with `p-6` padding. Counteracts padding to span full column width. `bg-[#0a1628]/95 backdrop-blur-xs` for floating appearance.
+- **Sticky save bar** — `sticky bottom-0 -mx-6 -mb-6` inside `overflow-y-auto` `<main>` with `p-6` padding. Counteracts padding to span full column width. `bg-[#0a1628]/95 backdrop-blur-sm` for floating appearance.
 - **Rule card expand hit area** — icon + rule name + description wrapped in a single `<button onClick={() => setExpanded(o => !o)}>`. Chevron demoted to `<div aria-hidden="true">` (non-interactive). Workflow `<select>` and enable toggle remain as siblings — no nested interactive elements.
 - **Workflow select** — `e.stopPropagation()` removed after expand-button restructure (no longer inside the expand button).
 - **Risk weight badge** — displays numeric weight only: `"Risk 35"` (not `"Risk ×35"` — × symbol was incorrect and visually ambiguous).
@@ -605,15 +605,208 @@ interface ReportsFilters {
 
 ---
 
+### 4.8 TreasuryShell — Global Layout Component
+
+**File:** `client/src/components/TreasuryShell.tsx`
+**Used by:** Any page in the `Netting` (and future) solution groups
+
+#### Purpose
+
+Two-tier nav shell extracted from `nav_v2_export.html`. Provides the shared chrome (header, solution tabs, left sidebar) for light-mode Ripple Treasury pages. Pages in `TreasuryShell` do **not** use `AppNav`.
+
+#### Structure
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│ Header  h-14  bg-[#001B66]  (logo · ⌘K search · Bell/Cfg/User) │
+├──────────────────────────────────────────────────────────────┤
+│ Solution tabs  bg-[#001B66]  (text-only, NO icons)           │
+│  [LM] [Payments] [Cash F.] [Risk] [●Netting] [Recon] …      │
+│  Active tab: h-0.5 white bar at TOP of button                │
+│  Hover:       h-0.5 #4D9AFF/60 bar slides in from center     │
+│  Collapsed sidebar: PanelLeftOpen button prepended here      │
+├─────────────────┬────────────────────────────────────────────┤
+│ Sidebar         │ <main> flex-1 overflow-auto                │
+│ w-[260px]       │  {children}                                │
+│ bg-[#f8f9fa]    │                                            │
+│ border-[#e5e5e5]│                                            │
+│                 │                                            │
+│ Quick Actions   │                                            │
+│  [PanelClose ←]│                                            │
+│  View Net Pos.  │                                            │
+│  Run New Batch  │                                            │
+│  Today's Summary│                                            │
+│ ─────────────── │                                            │
+│ Features        │                                            │
+│  ★ Netting Cyc  │                                            │
+│  Create Cycle   │                                            │
+│  Cycle History  │                                            │
+│  ● IC Settlement│                                            │
+│  Processing     │                                            │
+│  Rules          │                                            │
+│  Reports ×3     │                                            │
+│ ─────────────── │                                            │
+│ Solution Settings│                                           │
+│ Dark Mode       │                                            │
+└─────────────────┴────────────────────────────────────────────┘
+```
+
+#### Sidebar toggle
+
+- **Open → Close:** `PanelLeftClose` icon button in the Quick Actions header (`hidden md:flex`). Calls `setIsSidebarOpen(false)`.
+- **Closed → Open:** `PanelLeftOpen` icon button prepended to the solution tab row (only rendered when `!isSidebarOpen`). Calls `setIsSidebarOpen(true)`.
+- **Animation:** `transition-all duration-200` on `<aside>` — `w-[260px]` ↔ `w-0 overflow-hidden`. Inner sections have `min-w-[260px]` to prevent content wrapping during the transition.
+- **DOM structure (exact nav_v2 match):**
+  ```tsx
+  <div className="hidden md:flex flex-shrink-0">   {/* wrapper — responsive hide */}
+    <aside className={`flex flex-col transition-all duration-200 h-full
+                       bg-[#f8f9fa] border-r border-[#e5e5e5] overflow-hidden
+                       ${isSidebarOpen ? "w-[260px]" : "w-0"}`}>
+  ```
+  The `hidden md:flex` is on the wrapper `<div>`, not the `<aside>`. The aside is always `flex flex-col`; width toggle drives collapse.
+
+#### Active feature highlight
+
+The active feature item in the sidebar uses:
+```
+bg-white text-[#0f172a] font-medium shadow-sm border border-[#e2e8f0]
+```
+Inactive items: `text-[#475569] hover:text-[#0f172a] hover:bg-white/60`
+Active feature icon: `text-[#006AFF]`
+
+#### Props
+
+```ts
+interface TreasuryShellProps {
+  solution?: string;       // highlights the active solution tab (e.g. "Netting")
+  activeFeature?: string;  // highlights the active sidebar item by label
+  children: React.ReactNode;
+}
+```
+
+---
+
+### 4.9 Intercompany Settlement — Command Center
+
+**File:** `client/src/pages/IntercompanySettlement.tsx`
+**Route:** `/netting`
+**Theme:** Light mode, `TreasuryShell`, purple (`#9c47ff`) Netting accent
+**Source requirement:** `cross-entity-settlement-prd.md`
+
+#### Purpose
+
+The primary settlement operations screen. Operators view net positions across entity pairs, verify FBO account liquidity, monitor in-flight instructions, and configure/submit new settlement batches.
+
+#### Layout — two views, toggled from the page header
+
+```
+Page header: [⚡ icon] Intercompany Settlement | [Settlement type ▼] [Command Center|Report ⊞] [time] [Recalculate]
+```
+
+**View A — Command Center** (default):
+```
+┌──────────────────┬────────────────────────────┬─────────────────┐
+│ Net Positions    │ FBO Balances                │ In-Flight       │
+│ w-[300px]        │ flex-1                      │ w-[280px]       │
+│                  │                             │                 │
+│ [All|USD|EUR|GBP]│ Banking Windows card:       │ Header: batch   │
+│ ─ USD group ───  │  USD Fedwire · 3h42m        │ status summary  │
+│ ● SA ↔ INC $23M  │  EUR SEPA  · 1h18m ⚠       │ ─────────────── │
+│   → ICS expanded │  GBP Manual (no window)     │ ● Failed (red   │
+│ ─ EUR group ───  │                             │   border-l)     │
+│ ● SA ↔ LTD €14M  │ Entity accordions (SA/LTD/  │ ● Confirmed     │
+│ …                │ INC/BVI) — each accordion:  │ ● Sent to bank  │
+│                  │  [Bank] [CCY] [FBO|Corp]    │ ● 2nd signed    │
+│                  │  [Routing pill]             │ ● 1st signed    │
+│                  │  LM: $X − applied = Avail   │ ● In Payments   │
+│                  │  Balance bar                │ ● Submitted     │
+│                  │  Exposure cap bar (if CB)   │                 │
+└──────────────────┴────────────────────────────┴─────────────────┘
+Bottom bar: [Batch #047 · 7 instr · N confirmed · 1 failed]  [Analytics][Export][⚡ Configure New Batch]
+```
+
+**View B — Settlement Report**:
+Switches to a full-width table matching the Bitstamp IC Settlement Platform layout.
+
+```
+Toolbar: [N rows · N unsettled · N settled · Total: $XM USD + €XM EUR]  [Export Source Txns][Export Report]
+─────────────────────────────────────────────────────────────────────────────────────────────────────────
+From  |  →/←  |  To  |  To Settle  |  Calculation              |  Settlement tx          |  Ref        |  Status ▼
+─────────────────────────────────────────────────────────────────────────────────────────────────────────
+── EUR ─────────────────────────────────────────────────────────────────────────────────────────────────
+INC        →   SA    $14.20M      $16.10M − $1.90M = $14.20M   ENDID-2026-0311-00142    IC-EUR-047    ●Settled ▾
+SA         →   LTD   $8.30M       $9.80M − $1.50M = $8.30M     —                        IC-EUR-048    ●Unsettled ▾
+BVI   [red] ←  SA    $0.90M       $1.10M − $0.20M = $0.90M     —                        IC-EUR-051    ●Unsettled ▾
+── USD ─────────────────────────────────────────────────────────────────────────────────────────────────
+SA         →   INC   $23.10M      $24.60M − $1.50M = $23.10M   —                        IC-USD-047    ●Processing ▾
+...
+─────────────────────────────────────────────────────────────────────────────────────────────────────────
+Action bar: [Manual settlement] [Consolidate] [↻ Calculate new report] … [Update Statuses][← Prev][Next →][Last Report][Process]
+```
+
+#### Settlement types — from Bitstamp IC Settlement Platform PDF
+
+All 13 types are selectable from the dropdown in the page header:
+
+| Type | Notes |
+|------|-------|
+| Trade settlement | Default; largest volume |
+| Creditcard settlement | |
+| Ripple settlement | |
+| Deposit settlement | |
+| OTC trade settlement | |
+| Derivatives settlement | Skip-node required (BFS→MTF→INC handled as BFS→INC direct) |
+| Derivatives IF claim | Insurance Fund; firm money — never netted |
+| Derivatives IF premium | Insurance Fund; firm money |
+| Derivatives FEE sweep | Fee sweeps to BFS corporate |
+| Derivatives liquidation | |
+| Derivatives | General derivatives |
+| Account transfers | |
+| Withdrawals | |
+
+#### Overlays
+
+| Component | Trigger | Z-index | Behaviour |
+|-----------|---------|---------|-----------|
+| `ConfiguratorDrawer` | "Configure New Batch" button | z-40 | Slides in from right (Framer Motion `x: 560 → 0`), backdrop click closes |
+| `PreGoSummary` | Configurator submit | z-50 | Full-screen white overlay, scroll-gated submit |
+| `ProvenanceModal` | Click any net amount value | z-50 | Scale-in modal, backdrop click closes |
+| Post-submit toast | Pre-Go confirm | fixed bottom-6 right-6 z-50 | 10s auto-dismiss, Framer Motion slide-up |
+
+#### Key implementation rules
+
+- **Settlement type dropdown is dimmed** (`opacity-40 pointer-events-none`) when in Command Center view — it only affects the Settlement Report table
+- **Inverse direction rows** in the report table: `isInverse: true` → `bg-red-50` row, `←` red arrow in direction column, `text-red-700` amount
+- **Calculation formula** shown inline: `totalBalance [− previouslySettled] = toSettle` in monospace
+- **Status select** in report table: `appearance-none` + `ChevronDown` overlay icon for visual affordance
+- **React Fragment key** in `<tbody>` currency grouping: use `<Fragment key={currency}>` not shorthand `<>`
+- **ICS write-back status** per instruction in In-Flight panel: confirmed (green CheckCircle) / pending (amber Clock) / failed (with "Retry write-back" link)
+- **Skip-node chain diagram**: strikethrough node displayed in both Net Positions expanded row and ConfiguratorDrawer position card
+
+#### PRD requirement coverage
+
+| FR | Feature |
+|----|---------|
+| FR-020 | Available balance formula inline (`LM: $X − Applied: $Y = Available: $Z`) |
+| FR-021 | Bank exposure progress bar (Customers Bank 96% cap) |
+| FR-023 | FBO vs Corporate labelling per account |
+| FR-027 | Trace ID visible throughout (In-Flight + Pre-Go) |
+| FR-033b | Retry ICS write-back action on failed instructions |
+| FR-036 | 7-state status progression: Submitted → In Payments → First approver → Second approver → Sent to bank → Confirmed received → Failed |
+| FR-038 | Calculation provenance modal (source txn count, date range, last settlement, breakdown by type) |
+| FR-041 | ICS write-back status per instruction |
+
+---
+
 ## 5. Page Layout
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
 │  AppNav: GTreasury logo · CASH · PAYMENTS (active) · … · User · ⭐ ❓ 🔔  │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  SubHeader breadcrumb: Payments › Transaction Center                       │
+│  SubHeader breadcrumb: Payments › Transaction Status Workflow              │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  Page Header: "Transaction Center" · Last refreshed HH:MM [↻]             │
+│  Page Header: "Transaction Status Workflow" · Last refreshed HH:MM [↻]    │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  FilterPanel ── always-visible bar ─────────────────────────────────────── │
 │  [🔍 Search…] | [Trn. Date▼] [02/24]→[02/24] [Preset… ▼] |               │
@@ -668,7 +861,7 @@ interface ReportsFilters {
 | 2.1.1 Keyboard | All functionality keyboard accessible | Table rows: `tabIndex={0}` + `onKeyDown` Enter/Space; FraudSpotlight list: `onKeyDown` arrow keys |
 | 2.3.3 Animation from Interactions | Respect prefers-reduced-motion | Pulsing status dot uses `motion-safe:animate-pulse` |
 | 2.4.3 Focus Order | Focus order meaningful | Modal `autoFocus` on primary button; backdrop click dismisses |
-| 2.4.7 Focus Visible | Focus indicator always visible | `focus:ring-2 focus:ring-teal-500/50` — no `focus:outline-hidden` without replacement |
+| 2.4.7 Focus Visible | Focus indicator always visible | `focus:ring-2 focus:ring-teal-500/50` — no `focus:outline-none` without replacement |
 | 2.4.11 Focus Not Obscured | Focused element not fully hidden | Sticky header/toolbar account for scroll offset |
 | 2.5.8 Target Size Minimum | Min 24×24px on all interactive elements | All buttons ≥ `min-h-[24px] min-w-[24px]`; AppNav icons `p-2`; inline clear buttons `p-1.5 min-w-[28px] min-h-[28px]` |
 | 3.2.2 On Change | No unexpected context changes | All selects only update filter state; date presets only update date range |
@@ -719,7 +912,11 @@ All questions resolved. No open items.
 | Q12 | 2026-02-25 | Light mode audit — `breadcrumb-bar` class missing from fraud pages? | ✅ **Fixed** — added `breadcrumb-bar` class to `<nav aria-label="Breadcrumb">` in both `FraudRulesConfig.tsx` and `FraudReports.tsx`. Without it, `text-white/50`, `text-white/30`, `text-white/90` are not matched by the `.text-white` rule (they generate separate CSS class names) and render as invisible white-on-white. Also extended `.breadcrumb-bar a { color: #6b7280 }` to cover `Link` components (renders as `<a>`) in FraudReports. |
 | Q13 | 2026-02-25 | Process Flow selected stage invisible in light mode? | ✅ **Fixed** — `bg-white/5` (5% white overlay) is near-invisible on light surfaces. Added `html.light-mode [class*="bg-white\/5"] { background-color: rgba(0,0,0,0.04) }` to `index.css`, consistent with the existing `bg-white/2` and `bg-white/3` hover overrides. |
 | Q14 | 2026-02-25 | `color-scheme: dark` on form controls persisting in light mode? | ✅ **Fixed** — the base rule keys on the `bg-[#0f1e35]` class name, which stays on the root div even after the background is overridden in light mode. Native calendar pickers and select arrows were rendering with dark chrome on light backgrounds. Added `html.light-mode [class*="bg-[#0f1e35]"] input/select/textarea { color-scheme: light }` immediately after the base rule. |
-| Q15 | 2026-02-25 | FraudReports "Clear filters" button — no visible focus indicator? | ✅ **Fixed** — button had `focus:outline-hidden` with no replacement. Added `focus:ring-1 focus:ring-orange-500/40 rounded`. Consistent with the ring pattern used across filter buttons in the same file. |
+| Q15 | 2026-02-25 | FraudReports "Clear filters" button — no visible focus indicator? | ✅ **Fixed** — button had `focus:outline-none` with no replacement. Added `focus:ring-1 focus:ring-orange-500/40 rounded`. Consistent with the ring pattern used across filter buttons in the same file. |
+| Q16 | 2026-03-05 | TreasuryShell sidebar structure — `hidden md:flex` on aside vs wrapper div? | ✅ **Wrapper div** — `nav_v2_export.html` shows `<div class="hidden md:flex flex-shrink-0"><aside class="flex flex-col ...">`. The `hidden md:flex` belongs on an outer wrapper `<div>`, not the `<aside>` element itself. Aside is always `flex flex-col`; width animation drives the collapse. |
+| Q17 | 2026-03-05 | Solution tab `focus-visible:ring-offset` colour — `#001B66` or `#141A1F`? | ✅ **`#141A1F`** — confirmed from nav_v2 source. `ring-offset-[#141A1F]` matches the actual dark surface offset colour used in the design system; `#001B66` was incorrect. |
+| Q18 | 2026-03-05 | Quick Action trailing icon — `ChevronRight` or `ArrowRight`? | ✅ **`ArrowRight`** — confirmed from nav_v2 (`lucide-arrow-right h-3 w-3`). Quick Actions use `ArrowRight`; Features section retains `ChevronRight`. |
+| Q19 | 2026-03-05 | Section labels "Quick Actions" / "Features" — uppercase or mixed case? | ✅ **Mixed case** — nav_v2 uses `text-[11px] font-semibold tracking-wider text-[#94a3b8]` without `uppercase`. Removed `uppercase` from both labels. |
 
 ---
 

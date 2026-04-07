@@ -1,4 +1,3 @@
-// @tsw-organism — product nav, stays local
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
 import {
@@ -6,7 +5,8 @@ import {
   Landmark, ShieldCheck, Globe, Database, Settings, Search, User, Star, HelpCircle, Bell,
   Table2, ArrowLeftRight, CheckSquare, ListOrdered, FileCheck, RotateCcw, Undo2,
   LayoutTemplate, Wrench, Cog, ClipboardList, GitCompareArrows,
-  List, BarChart, History,
+  List, BarChart, Sparkles, History,
+  Zap, PlusCircle, SlidersHorizontal, FileText, FileBarChart, BarChart3, RefreshCcw,
 } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -22,7 +22,7 @@ interface MenuSection { title: string; items: MenuItem[]; }
 interface NavItem {
   label: string;
   Icon: LucideIcon;
-  dropdown?: "payments" | "antiFraud";
+  dropdown?: "payments" | "antiFraud" | "netting";
 }
 
 // ── Menu data ──────────────────────────────────────────────────────────────────
@@ -34,7 +34,7 @@ const paymentsMenuSections: MenuSection[] = [
       { icon: Table2,            label: "Single Transaction" },
       { icon: Table2,            label: "Multiple Transactions" },
       { icon: ArrowLeftRight,    label: "Internal Transfer" },
-      { icon: GitCompareArrows,  label: "Transaction Center", highlight: true, route: "/prototype" },
+      { icon: GitCompareArrows,  label: "Transaction Status Workflow", highlight: true, route: "/prototype" },
       { icon: CheckSquare,       label: "Payment Approvals" },
       { icon: ListOrdered,       label: "Transaction List" },
       { icon: FileCheck,         label: "Prenote NOC" },
@@ -72,6 +72,40 @@ const antiFraudMenuSections: MenuSection[] = [
       { icon: BarChart,     label: "Statistics" },
     ],
   },
+  {
+    title: "Setup",
+    items: [
+      { icon: Sparkles, label: "GSmart Fraud Rules", highlight: true, route: "/fraud-rules" },
+      { icon: BarChart, label: "Reports", route: "/fraud-reports" },
+    ],
+  },
+];
+
+const nettingMenuSections: MenuSection[] = [
+  {
+    title: "Netting Cycles",
+    items: [
+      { icon: RefreshCcw,        label: "Netting Cycles" },
+      { icon: PlusCircle,        label: "Create Netting Cycle" },
+      { icon: History,           label: "Cycle History" },
+    ],
+  },
+  {
+    title: "Settlement",
+    items: [
+      { icon: GitCompareArrows,  label: "Intercompany Settlement", highlight: true, route: "/netting" },
+      { icon: Zap,               label: "Settlement Processing" },
+      { icon: SlidersHorizontal, label: "Settlement Rules" },
+    ],
+  },
+  {
+    title: "Reports",
+    items: [
+      { icon: FileText,          label: "Netting Reports" },
+      { icon: FileBarChart,      label: "Settlement Reports" },
+      { icon: BarChart3,         label: "Netting Analytics" },
+    ],
+  },
 ];
 
 const NAV_ITEMS: NavItem[] = [
@@ -82,7 +116,8 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Accounting",  Icon: Calculator                },
   { label: "Reporting",   Icon: BarChart2                 },
   { label: "Market data", Icon: TrendingUp                },
-  { label: "Banking",     Icon: Landmark                  },
+  { label: "Banking",     Icon: Landmark                       },
+  { label: "Netting",     Icon: Zap,         dropdown: "netting"  },
   { label: "Anti fraud",  Icon: ShieldCheck, dropdown: "antiFraud" },
   { label: "Connectivity",Icon: Globe                     },
   { label: "Common data", Icon: Database                  },
@@ -94,16 +129,21 @@ export default function AppNav() {
   const [location, navigate]       = useLocation();
   const [antiFraudOpen, setAntiFraudOpen] = useState(false);
   const [paymentsOpen,  setPaymentsOpen]  = useState(false);
+  const [nettingOpen,   setNettingOpen]   = useState(false);
 
   const [paymentsSection, setPaymentsSection] = useState("Transaction");
+  const [nettingSection,  setNettingSection]  = useState("Settlement");
   // Left offset for the Anti Fraud fixed dropdown
-  const [afLeft, setAfLeft] = useState(0);
+  const [afLeft,      setAfLeft]      = useState(0);
+  const [nettingLeft, setNettingLeft] = useState(0);
 
   // Separate refs for buttons and panels (both dropdowns render outside the overflow nav)
   const antiFraudBtn   = useRef<HTMLButtonElement>(null);
   const antiFraudPanel = useRef<HTMLDivElement>(null);
   const paymentsBtn    = useRef<HTMLButtonElement>(null);
   const paymentsPanel  = useRef<HTMLDivElement>(null);
+  const nettingBtn     = useRef<HTMLButtonElement>(null);
+  const nettingPanel   = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onMouseDown = (e: MouseEvent) => {
@@ -120,41 +160,48 @@ export default function AppNav() {
       ) {
         setPaymentsOpen(false);
       }
-    };
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setAntiFraudOpen(false);
-        setPaymentsOpen(false);
+      if (
+        nettingBtn.current   && !nettingBtn.current.contains(t) &&
+        nettingPanel.current && !nettingPanel.current.contains(t)
+      ) {
+        setNettingOpen(false);
       }
     };
     document.addEventListener("mousedown", onMouseDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("mousedown", onMouseDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
+    return () => document.removeEventListener("mousedown", onMouseDown);
   }, []);
 
   // Close dropdowns on route change
   useEffect(() => {
     setAntiFraudOpen(false);
     setPaymentsOpen(false);
+    setNettingOpen(false);
   }, [location]);
 
   // Determine active nav item based on current route
   const activeItem =
-    location.startsWith("/fraud") ? "Anti fraud" : "Payments";
+    location.startsWith("/netting") ? "Netting" :
+    location.startsWith("/fraud")   ? "Anti fraud" : "Payments";
 
-  const toggle = (which: "payments" | "antiFraud") => {
+  const toggle = (which: "payments" | "antiFraud" | "netting") => {
     if (which === "antiFraud") {
       if (!antiFraudOpen && antiFraudBtn.current) {
         setAfLeft(antiFraudBtn.current.getBoundingClientRect().left);
       }
       setAntiFraudOpen(o => !o);
       setPaymentsOpen(false);
+      setNettingOpen(false);
+    } else if (which === "netting") {
+      if (!nettingOpen && nettingBtn.current) {
+        setNettingLeft(nettingBtn.current.getBoundingClientRect().left);
+      }
+      setNettingOpen(o => !o);
+      setAntiFraudOpen(false);
+      setPaymentsOpen(false);
     } else {
       setPaymentsOpen(o => !o);
       setAntiFraudOpen(false);
+      setNettingOpen(false);
     }
   };
 
@@ -163,23 +210,48 @@ export default function AppNav() {
       {/* Skip to main content */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-100 focus:px-4 focus:py-2 focus:rounded-[var(--ds-radius-lg)] focus:bg-[var(--ds-color-brand-primary)] focus:text-[var(--ds-color-text-on-brand)] focus:text-sm focus:font-medium focus:shadow-lg focus:outline-hidden"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-teal-600 focus:text-white focus:text-sm focus:font-bold focus:shadow-lg focus:outline-none"
       >
         Skip to main content
       </a>
 
-      {/* Secondary Nav bar */}
-      <div className="nav-dark flex items-center h-[96px] bg-[var(--ds-color-surface-sunken)] border-b border-[var(--ds-color-border-default)] shrink-0 relative z-30">
-
-        <a href="/" className="flex items-center shrink-0 pl-4 pr-3 h-full group" aria-label="Ripple Treasury home">
-          <img src="/logo.svg" alt="" className="h-9 w-auto theme-logo" aria-hidden="true" />
-        </a>
+      {/* Nav bar */}
+      <div className="nav-dark flex items-center h-[64px] bg-[#0a1628] border-b border-[#1a3455] shrink-0 relative z-50">
+        {/* Logo */}
+        <button
+          onClick={() => navigate("/prototype")}
+          aria-label="Ripple Treasury — return to home"
+          className="flex items-center px-5 shrink-0 h-full hover:bg-white/5 transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500/40"
+        >
+          <img src="/logo.svg" alt="Ripple Treasury" className="nav-logo h-7 w-auto" />
+        </button>
 
         {/* Primary navigation — overflow hidden so dropdowns render outside via fixed/sibling */}
         <nav className="flex items-stretch flex-1 h-full overflow-x-auto scrollbar-none" aria-label="Main navigation">
           {NAV_ITEMS.map(({ label, Icon, dropdown }) => {
             const isActive    = label === activeItem;
-            const isOpen      = dropdown === "payments" ? paymentsOpen : dropdown === "antiFraud" ? antiFraudOpen : false;
+            const isOpen      = dropdown === "payments" ? paymentsOpen
+                              : dropdown === "antiFraud" ? antiFraudOpen
+                              : dropdown === "netting" ? nettingOpen
+                              : false;
+
+            if (dropdown === "netting") {
+              return (
+                <button
+                  key={label}
+                  ref={nettingBtn}
+                  aria-current={isActive ? "page" : undefined}
+                  aria-expanded={isOpen}
+                  aria-haspopup="true"
+                  onClick={() => toggle("netting")}
+                  className={`flex flex-col items-center justify-center gap-[3px] px-3 h-full text-xs font-semibold tracking-wide shrink-0 border-b-2 transition-all
+                    ${isActive || isOpen ? "text-violet-400 border-violet-400 bg-violet-400/5" : "text-slate-400 border-transparent hover:text-slate-200 hover:bg-white/5"}`}
+                >
+                  <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
+                  {label}
+                </button>
+              );
+            }
 
             if (dropdown === "antiFraud") {
               return (
@@ -190,8 +262,8 @@ export default function AppNav() {
                   aria-expanded={isOpen}
                   aria-haspopup="true"
                   onClick={() => toggle("antiFraud")}
-                  className={`flex flex-col items-center justify-center gap-[3px] px-3 h-full text-xs font-medium tracking-wide shrink-0 border-b-2 transition-all
-                    ${isActive || isOpen ? "text-[var(--ds-color-brand-primary)] border-[var(--ds-color-brand-primary)] bg-[var(--ds-color-brand-primary-subtle)]" : "text-[var(--ds-color-text-secondary)] border-transparent hover:text-[var(--ds-color-text-primary)] hover:bg-white/5"}`}
+                  className={`flex flex-col items-center justify-center gap-[3px] px-3 h-full text-xs font-semibold tracking-wide shrink-0 border-b-2 transition-all
+                    ${isActive || isOpen ? "text-teal-400 border-teal-400 bg-teal-400/5" : "text-slate-400 border-transparent hover:text-slate-200 hover:bg-white/5"}`}
                 >
                   <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
                   {label}
@@ -208,8 +280,8 @@ export default function AppNav() {
                   aria-expanded={isOpen}
                   aria-haspopup="true"
                   onClick={() => toggle("payments")}
-                  className={`flex flex-col items-center justify-center gap-[3px] px-3 h-full text-xs font-medium tracking-wide shrink-0 border-b-2 transition-all
-                    ${isActive || isOpen ? "text-[var(--ds-color-brand-primary)] border-[var(--ds-color-brand-primary)] bg-[var(--ds-color-brand-primary-subtle)]" : "text-[var(--ds-color-text-secondary)] border-transparent hover:text-[var(--ds-color-text-primary)] hover:bg-white/5"}`}
+                  className={`flex flex-col items-center justify-center gap-[3px] px-3 h-full text-xs font-semibold tracking-wide shrink-0 border-b-2 transition-all
+                    ${isActive || isOpen ? "text-teal-400 border-teal-400 bg-teal-400/5" : "text-slate-400 border-transparent hover:text-slate-200 hover:bg-white/5"}`}
                 >
                   <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
                   {label}
@@ -220,7 +292,7 @@ export default function AppNav() {
             return (
               <button
                 key={label}
-                className="flex flex-col items-center justify-center gap-[3px] px-3 h-full text-xs font-medium tracking-wide shrink-0 border-b-2 border-transparent text-[var(--ds-color-text-secondary)] hover:text-[var(--ds-color-text-primary)] hover:bg-white/5 transition-all"
+                className="flex flex-col items-center justify-center gap-[3px] px-3 h-full text-xs font-semibold tracking-wide shrink-0 border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-all"
               >
                 <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
                 {label}
@@ -235,9 +307,9 @@ export default function AppNav() {
             <input
               placeholder="I'm looking for..."
               aria-label="Global search"
-              className="bg-[var(--ds-color-surface-default)] border border-[var(--ds-color-border-default)] text-[var(--ds-color-text-secondary)] text-xs rounded-full pl-4 pr-8 py-1.5 w-52 focus:outline-hidden focus:ring-2 focus:ring-[var(--ds-color-brand-primary)] focus:border-[var(--ds-color-brand-primary)]/40 placeholder:text-[var(--ds-color-text-tertiary)] transition-all"
+              className="bg-[#162a47] border border-[#1a3455] text-slate-300 text-xs rounded-full pl-4 pr-8 py-1.5 w-52 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/40 placeholder:text-slate-500 transition-all"
             />
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--ds-color-text-secondary)]" aria-hidden="true" />
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" aria-hidden="true" />
           </div>
           <div role="group" aria-label="User and utility actions" className="flex items-center">
             {([
@@ -249,7 +321,7 @@ export default function AppNav() {
               <button
                 key={lbl}
                 aria-label={lbl}
-                className="text-[var(--ds-color-text-secondary)] hover:text-[var(--ds-color-text-primary)] p-2 transition-colors shrink-0 rounded focus:outline-hidden focus:ring-2 focus:ring-[var(--ds-color-brand-primary)]"
+                className="text-slate-400 hover:text-slate-200 p-2 transition-colors shrink-0 rounded focus:outline-none focus:ring-2 focus:ring-teal-500/50"
               >
                 <Ic className="w-4 h-4" aria-hidden="true" />
               </button>
@@ -262,13 +334,13 @@ export default function AppNav() {
       {antiFraudOpen && (
         <div
           ref={antiFraudPanel}
-          style={{ position: "fixed", left: afLeft, top: 140, zIndex: 200 }}
-          className="nav-dark w-[560px] bg-[var(--ds-color-surface-page)] border border-[var(--ds-color-border-default)] rounded-b-[var(--ds-radius-xl)] shadow-2xl overflow-hidden"
+          style={{ position: "fixed", left: afLeft, top: 64, zIndex: 200 }}
+          className="w-[560px] bg-[#0d1c30] border border-[#1a3455] rounded-b-xl shadow-2xl overflow-hidden"
         >
           {antiFraudMenuSections.map((section) => (
             <div key={section.title}>
-              <div className="px-4 py-2 bg-[var(--ds-color-surface-sunken)] border-b border-[var(--ds-color-border-default)]">
-                <span className="text-xs font-medium uppercase tracking-wider text-[var(--ds-color-text-secondary)]">
+              <div className="px-4 py-2 bg-[#0a1628] border-b border-[#1a3455]">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   {section.title}
                 </span>
               </div>
@@ -282,19 +354,19 @@ export default function AppNav() {
                         setAntiFraudOpen(false);
                       }
                     }}
-                    className={`flex flex-col items-center gap-1.5 p-3 rounded-[var(--ds-radius-lg)] transition-colors min-w-[80px] text-left ${
+                    className={`flex flex-col items-center gap-1.5 p-3 rounded-lg transition-colors min-w-[80px] text-left ${
                       item.highlight
-                        ? "bg-linear-to-br from-[var(--ds-color-feedback-warning-bg)] to-[var(--ds-color-feedback-warning-bg)] hover:from-[var(--ds-color-feedback-warning-bg)] hover:to-[var(--ds-color-feedback-warning-bg)] ring-1 ring-[var(--ds-color-feedback-warning-border)]/30"
-                        : "hover:bg-[var(--ds-color-surface-default)]"
+                        ? "bg-gradient-to-br from-orange-500/20 to-yellow-500/10 hover:from-orange-500/30 hover:to-yellow-500/20 ring-1 ring-orange-500/30"
+                        : "hover:bg-[#162a47]"
                     } ${item.route ? "cursor-pointer" : "cursor-default"}`}
                   >
                     <item.icon
-                      className={`w-5 h-5 ${item.highlight ? "text-[var(--ds-color-feedback-warning-text)]" : "text-[var(--ds-color-text-secondary)]"}`}
+                      className={`w-5 h-5 ${item.highlight ? "text-orange-400" : "text-slate-400"}`}
                       aria-hidden="true"
                     />
                     <span
                       className={`text-xs font-medium text-center leading-tight ${
-                        item.highlight ? "text-[var(--ds-color-feedback-warning-text)]" : "text-[var(--ds-color-text-secondary)]"
+                        item.highlight ? "text-orange-300" : "text-slate-400"
                       }`}
                     >
                       {item.label}
@@ -307,22 +379,83 @@ export default function AppNav() {
         </div>
       )}
 
+      {/* Netting dropdown — fixed position to escape overflow-x-auto clipping */}
+      {nettingOpen && (
+        <div
+          ref={nettingPanel}
+          style={{ position: "fixed", left: nettingLeft, top: 64, zIndex: 200 }}
+          className="w-[680px] bg-[#0d1c30] border border-[#1a3455] rounded-b-xl shadow-2xl overflow-hidden flex"
+        >
+          {/* Section sidebar */}
+          <div className="w-[160px] border-r border-[#1a3455] bg-[#0a1628] py-2 shrink-0">
+            {nettingMenuSections.map((section) => (
+              <button
+                key={section.title}
+                onClick={() => setNettingSection(section.title)}
+                className={`w-full text-left px-4 py-2.5 text-xs transition-colors ${
+                  nettingSection === section.title
+                    ? "text-violet-400 font-semibold bg-violet-400/5 border-l-2 border-violet-400"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
+                }`}
+              >
+                {section.title}
+              </button>
+            ))}
+          </div>
+          {/* Items grid */}
+          <div className="flex-1 px-6 py-4">
+            <div className="flex flex-wrap gap-3">
+              {nettingMenuSections
+                .find((s) => s.title === nettingSection)
+                ?.items.map((item) => (
+                  <button
+                    key={item.label}
+                    onClick={() => {
+                      if (item.route) {
+                        navigate(item.route);
+                        setNettingOpen(false);
+                      }
+                    }}
+                    className={`flex flex-col items-center gap-1.5 p-3 rounded-lg transition-colors min-w-[100px] ${
+                      item.highlight
+                        ? "bg-gradient-to-br from-violet-500/20 to-purple-500/10 hover:from-violet-500/30 hover:to-purple-500/20 ring-1 ring-violet-500/30"
+                        : "hover:bg-[#162a47]"
+                    } ${item.route ? "cursor-pointer" : "cursor-default"}`}
+                  >
+                    <item.icon
+                      className={`w-6 h-6 ${item.highlight ? "text-violet-400" : "text-slate-400"}`}
+                      aria-hidden="true"
+                    />
+                    <span
+                      className={`text-xs font-medium text-center leading-tight ${
+                        item.highlight ? "text-violet-300" : "text-slate-400"
+                      }`}
+                    >
+                      {item.label}
+                    </span>
+                  </button>
+                ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Full-width Payments dropdown (below nav bar) */}
       {paymentsOpen && (
         <div
           ref={paymentsPanel}
-          className="nav-dark bg-[var(--ds-color-surface-page)] border-b border-[var(--ds-color-border-default)] shadow-xl flex relative z-40"
+          className="bg-[#0d1c30] border-b border-[#1a3455] shadow-xl flex relative z-40"
         >
           {/* Section sidebar */}
-          <div className="w-[180px] border-r border-[var(--ds-color-border-default)] bg-[var(--ds-color-surface-sunken)] py-2 shrink-0">
+          <div className="w-[180px] border-r border-[#1a3455] bg-[#0a1628] py-2 shrink-0">
             {paymentsMenuSections.map((section) => (
               <button
                 key={section.title}
                 onClick={() => setPaymentsSection(section.title)}
                 className={`w-full text-left px-4 py-2.5 text-xs transition-colors ${
                   paymentsSection === section.title
-                    ? "text-[var(--ds-color-brand-primary)] font-medium bg-[var(--ds-color-brand-primary-subtle)] border-l-2 border-[var(--ds-color-brand-primary)]"
-                    : "text-[var(--ds-color-text-secondary)] hover:text-[var(--ds-color-text-primary)] hover:bg-white/5"
+                    ? "text-teal-400 font-semibold bg-teal-400/5 border-l-2 border-teal-400"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
                 }`}
               >
                 {section.title}
@@ -344,19 +477,19 @@ export default function AppNav() {
                         setPaymentsOpen(false);
                       }
                     }}
-                    className={`flex flex-col items-center gap-1.5 p-3 rounded-[var(--ds-radius-lg)] transition-colors min-w-[100px] ${
+                    className={`flex flex-col items-center gap-1.5 p-3 rounded-lg transition-colors min-w-[100px] ${
                       item.highlight
-                        ? "bg-linear-to-br from-[var(--ds-color-brand-primary-subtle)] to-[var(--ds-color-brand-primary-subtle)] hover:from-[var(--ds-color-interactive-selected-bg)] hover:to-[var(--ds-color-interactive-selected-bg)] ring-1 ring-[var(--ds-color-brand-primary)]/30"
-                        : "hover:bg-[var(--ds-color-surface-default)]"
+                        ? "bg-gradient-to-br from-teal-500/20 to-cyan-500/10 hover:from-teal-500/30 hover:to-cyan-500/20 ring-1 ring-teal-500/30"
+                        : "hover:bg-[#162a47]"
                     } ${item.route ? "cursor-pointer" : "cursor-default"}`}
                   >
                     <item.icon
-                      className={`w-6 h-6 ${item.highlight ? "text-[var(--ds-color-brand-primary)]" : "text-[var(--ds-color-text-secondary)]"}`}
+                      className={`w-6 h-6 ${item.highlight ? "text-teal-400" : "text-slate-400"}`}
                       aria-hidden="true"
                     />
                     <span
                       className={`text-xs font-medium text-center leading-tight ${
-                        item.highlight ? "text-[var(--ds-color-brand-primary)]" : "text-[var(--ds-color-text-secondary)]"
+                        item.highlight ? "text-teal-300" : "text-slate-400"
                       }`}
                     >
                       {item.label}
